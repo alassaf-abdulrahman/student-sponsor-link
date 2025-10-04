@@ -8,6 +8,10 @@ import Index from "./pages/Index";
 import StudentDashboard from "./pages/StudentDashboard";
 import StudentTickets from "./pages/StudentTickets";
 import StudentTicketDetail from "./pages/StudentTicketDetail";
+import StudentPrograms from "./pages/StudentPrograms";
+import StudentProgramDetail from "./pages/StudentProgramDetail";
+import StudentOpportunities from "./pages/StudentOpportunities";
+import StudentOpportunityDetail from "./pages/StudentOpportunityDetail";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Applications from "./pages/admin/Applications";
@@ -18,6 +22,8 @@ import TicketDetail from "./pages/admin/TicketDetail";
 import Announcements from "./pages/admin/Announcements";
 import Programs from "./pages/admin/Programs";
 import ProgramDetail from "./pages/admin/ProgramDetail";
+import Opportunities from "./pages/admin/Opportunities";
+import OpportunityDetail from "./pages/admin/OpportunityDetail";
 import DataAnalysis from "./pages/admin/DataAnalysis";
 import PlaceholderPage from "./pages/admin/PlaceholderPage";
 import NotFound from "./pages/NotFound";
@@ -33,8 +39,12 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/student/dashboard" element={<StudentDashboard />} />
-            <Route path="/student/tickets" element={<StudentTickets />} />
+            <Route path="/student" element={<StudentDashboard />} />
+            <Route path="/student/programs" element={<StudentPrograms />} />
+            <Route path="/student/programs/:id" element={<StudentProgramDetail />} />
+            <Route path="/student/opportunities" element={<StudentOpportunities />} />
+            <Route path="/student/opportunities/:id" element={<StudentOpportunityDetail />} />
+            <Route path="/student/support" element={<StudentTickets />} />
             <Route path="/student/tickets/:id" element={<StudentTicketDetail />} />
             
             {/* Admin Routes */}
@@ -51,9 +61,11 @@ const App = () => (
               <Route path="tickets" element={<Tickets />} />
               <Route path="tickets/:id" element={<TicketDetail />} />
               <Route path="announcements" element={<Announcements />} />
-              <Route path="programs" element={<Programs />} />
-              <Route path="programs/:id" element={<ProgramDetail />} />
-              <Route path="data-analysis" element={<DataAnalysis />} />
+            <Route path="programs" element={<Programs />} />
+            <Route path="programs/:id" element={<ProgramDetail />} />
+            <Route path="opportunities" element={<Opportunities />} />
+            <Route path="opportunities/:id" element={<OpportunityDetail />} />
+            <Route path="data-analysis" element={<DataAnalysis />} />
             </Route>
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

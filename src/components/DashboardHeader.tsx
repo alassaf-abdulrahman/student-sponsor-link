@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Globe, Receipt, FolderOpen, Moon, Sun, LifeBuoy } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Globe, Receipt, FolderOpen, Moon, Sun, LifeBuoy, Users } from "lucide-react";
+import { Link } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,46 +12,43 @@ import { useTheme } from "next-themes";
 
 export const DashboardHeader = () => {
   const { theme, setTheme } = useTheme();
-  const navigate = useNavigate();
 
   return (
     <header className="border-b border-border bg-card">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo/Brand */}
           <div className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold text-lg">
-              S
-            </div>
-            <span className="hidden sm:inline text-lg font-semibold text-foreground">
-              Scholarship Portal
-            </span>
+            <Link to="/student" className="flex items-center gap-2">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold text-lg">
+                S
+              </div>
+              <span className="hidden sm:inline text-lg font-semibold text-foreground">
+                Scholarship Portal
+              </span>
+            </Link>
           </div>
 
-          {/* Navigation */}
           <nav className="flex items-center gap-2 sm:gap-4">
-            {/* Programs - Placeholder */}
-            <Button variant="ghost" size="sm" className="gap-2">
-              <FolderOpen className="h-4 w-4" />
-              <span className="hidden sm:inline">Programs</span>
-            </Button>
+            <Link to="/student/programs">
+              <Button variant="ghost" size="sm" className="gap-2">
+                <FolderOpen className="h-4 w-4" />
+                <span className="hidden sm:inline">Programs</span>
+              </Button>
+            </Link>
 
-            {/* Tuition Fee Requests */}
-            <Button variant="ghost" size="sm" className="gap-2">
-              <Receipt className="h-4 w-4" />
-              <span className="hidden sm:inline">Tuition Requests</span>
-            </Button>
+            <Link to="/student/opportunities">
+              <Button variant="ghost" size="sm" className="gap-2">
+                <Users className="h-4 w-4" />
+                <span className="hidden sm:inline">Volunteering</span>
+              </Button>
+            </Link>
 
-            {/* Support Tickets */}
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="gap-2"
-              onClick={() => navigate("/student/tickets")}
-            >
-              <LifeBuoy className="h-4 w-4" />
-              <span className="hidden sm:inline">Support</span>
-            </Button>
+            <Link to="/student/support">
+              <Button variant="ghost" size="sm" className="gap-2">
+                <LifeBuoy className="h-4 w-4" />
+                <span className="hidden sm:inline">Support</span>
+              </Button>
+            </Link>
 
             {/* Theme Toggle */}
             <Button 

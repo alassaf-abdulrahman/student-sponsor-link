@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table,
@@ -12,7 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ArrowLeft, Calendar, MapPin, Mail, CheckCircle2 } from "lucide-react";
+import { Calendar, MapPin, Mail, ArrowLeft, Award } from "lucide-react";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 
@@ -72,6 +72,8 @@ const ProgramDetail = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [students, setStudents] = useState<EnrolledStudent[]>(mockEnrolledStudents);
+  const [isAttendanceConfirmed, setIsAttendanceConfirmed] = useState(false);
+  const [certificatesGenerated, setCertificatesGenerated] = useState(false);
 
   const toggleAttendance = (studentId: string) => {
     setStudents(
@@ -84,10 +86,19 @@ const ProgramDetail = () => {
   };
 
   const confirmAllAttendance = () => {
+    setIsAttendanceConfirmed(true);
     const attendedCount = students.filter((s) => s.attended).length;
     toast({
       title: "Attendance Confirmed",
       description: `${attendedCount} out of ${students.length} students marked as attended`,
+    });
+  };
+
+  const handleGenerateCertificates = () => {
+    setCertificatesGenerated(true);
+    toast({
+      title: "Certificates Generated",
+      description: "Certificates are now available for students who attended.",
     });
   };
 
@@ -211,10 +222,17 @@ const ProgramDetail = () => {
           <div className="flex items-center justify-between">
             <CardTitle>Enrolled Students</CardTitle>
             {mockProgram.status === "completed" && (
-              <Button onClick={confirmAllAttendance} className="gap-2">
-                <CheckCircle2 className="h-4 w-4" />
-                Save Attendance
-              </Button>
+              <div className="flex gap-2">
+                <Button onClick={confirmAllAttendance} disabled={isAttendanceConfirmed}>
+                  {isAttendanceConfirmed ? "Attendance Confirmed" : "Confirm Attendance"}
+                </Button>
+                {isAttendanceConfirmed && (
+                  <Button onClick={handleGenerateCertificates} disabled={certificatesGenerated} variant="outline" className="gap-2">
+                    <Award className="h-4 w-4" />
+                    {certificatesGenerated ? "Certificates Generated" : "Generate Certificates"}
+                  </Button>
+                )}
+              </div>
             )}
           </div>
         </CardHeader>

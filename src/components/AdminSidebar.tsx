@@ -40,6 +40,7 @@ const menuItems = [
   { title: "Tickets", url: "/admin/tickets", icon: TicketIcon },
   { title: "Announcements", url: "/admin/announcements", icon: Bell },
   { title: "Programs", url: "/admin/programs", icon: Briefcase },
+  { title: "Opportunities", url: "/admin/opportunities", icon: Users },
   { title: "Data Analysis", url: "/admin/data-analysis", icon: TrendingUp },
 ];
 

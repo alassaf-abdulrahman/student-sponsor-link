@@ -32,7 +32,7 @@ import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 
-type Program = {
+type Opportunity = {
   id: string;
   title: string;
   overview: string;
@@ -45,53 +45,41 @@ type Program = {
   enrolledCount: number;
 };
 
-const mockPrograms: Program[] = [
+const mockOpportunities: Opportunity[] = [
   {
     id: "1",
-    title: "Leadership Workshop 2024",
-    overview: "Develop essential leadership skills for your academic and professional journey",
-    place: "University Main Hall",
-    date: new Date("2024-03-15"),
-    contentType: "Workshop",
-    contactDetails: "events@scholarship.org",
-    poster: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400",
+    title: "Community Clean-Up Drive",
+    overview: "Help maintain a clean and sustainable community environment",
+    place: "Central Park",
+    date: new Date("2024-03-20"),
+    contentType: "Environmental",
+    contactDetails: "volunteer@community.org",
+    poster: "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=400",
     status: "upcoming",
-    enrolledCount: 45,
+    enrolledCount: 28,
   },
   {
     id: "2",
-    title: "Career Development Seminar",
-    overview: "Learn about career opportunities and professional development strategies",
-    place: "Conference Center",
-    date: new Date("2024-02-28"),
-    contentType: "Seminar",
-    contactDetails: "careers@scholarship.org",
-    poster: "https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=400",
-    status: "completed",
-    enrolledCount: 78,
-  },
-  {
-    id: "3",
-    title: "Community Service Initiative",
-    overview: "Join us in giving back to the community through various volunteer activities",
-    place: "City Community Center",
-    date: new Date("2024-04-10"),
-    contentType: "Volunteer",
-    contactDetails: "volunteer@scholarship.org",
-    poster: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400",
+    title: "Educational Support Program",
+    overview: "Tutor underprivileged students in various subjects",
+    place: "Community Learning Center",
+    date: new Date("2024-04-05"),
+    contentType: "Education",
+    contactDetails: "education@volunteer.org",
+    poster: "https://images.unsplash.com/photo-1497375628476-a6b648a2b89c?w=400",
     status: "upcoming",
-    enrolledCount: 32,
+    enrolledCount: 15,
   },
 ];
 
-const Programs = () => {
-  const [programs, setPrograms] = useState<Program[]>(mockPrograms);
+const Opportunities = () => {
+  const [opportunities, setOpportunities] = useState<Opportunity[]>(mockOpportunities);
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const [newProgram, setNewProgram] = useState({
+  const [newOpportunity, setNewOpportunity] = useState({
     title: "",
     overview: "",
     place: "",
@@ -102,13 +90,13 @@ const Programs = () => {
     notifyUniversity: "",
   });
 
-  const filteredPrograms = programs.filter((program) =>
-    program.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    program.contentType.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredOpportunities = opportunities.filter((opportunity) =>
+    opportunity.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    opportunity.contentType.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleAddProgram = () => {
-    if (!newProgram.title || !newProgram.date) {
+  const handleAddOpportunity = () => {
+    if (!newOpportunity.title || !newOpportunity.date) {
       toast({
         title: "Error",
         description: "Please fill in all required fields",
@@ -117,17 +105,17 @@ const Programs = () => {
       return;
     }
 
-    const program: Program = {
-      id: String(programs.length + 1),
-      ...newProgram,
-      date: new Date(newProgram.date),
+    const opportunity: Opportunity = {
+      id: String(opportunities.length + 1),
+      ...newOpportunity,
+      date: new Date(newOpportunity.date),
       status: "upcoming",
       enrolledCount: 0,
     };
 
-    setPrograms([...programs, program]);
+    setOpportunities([...opportunities, opportunity]);
     setIsAddDialogOpen(false);
-    setNewProgram({
+    setNewOpportunity({
       title: "",
       overview: "",
       place: "",
@@ -140,7 +128,7 @@ const Programs = () => {
 
     toast({
       title: "Success",
-      description: "Program created successfully",
+      description: "Volunteering opportunity created successfully",
     });
   };
 
@@ -161,39 +149,39 @@ const Programs = () => {
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Programs</h1>
+          <h1 className="text-3xl font-bold text-foreground">Volunteering Opportunities</h1>
           <p className="text-muted-foreground mt-1">
-            Manage scholarship programs and track enrollments
+            Manage volunteering opportunities and track volunteer hours
           </p>
         </div>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
             <Button className="gap-2">
               <Plus className="h-4 w-4" />
-              Add Program
+              Add Opportunity
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Add New Program</DialogTitle>
+              <DialogTitle>Add New Volunteering Opportunity</DialogTitle>
             </DialogHeader>
             <div className="space-y-4 mt-4">
               <div>
                 <Label htmlFor="title">Title *</Label>
                 <Input
                   id="title"
-                  value={newProgram.title}
-                  onChange={(e) => setNewProgram({ ...newProgram, title: e.target.value })}
-                  placeholder="Program title"
+                  value={newOpportunity.title}
+                  onChange={(e) => setNewOpportunity({ ...newOpportunity, title: e.target.value })}
+                  placeholder="Opportunity title"
                 />
               </div>
               <div>
                 <Label htmlFor="overview">Overview</Label>
                 <Textarea
                   id="overview"
-                  value={newProgram.overview}
-                  onChange={(e) => setNewProgram({ ...newProgram, overview: e.target.value })}
-                  placeholder="Program description"
+                  value={newOpportunity.overview}
+                  onChange={(e) => setNewOpportunity({ ...newOpportunity, overview: e.target.value })}
+                  placeholder="Opportunity description"
                   rows={3}
                 />
               </div>
@@ -201,8 +189,8 @@ const Programs = () => {
                 <Label htmlFor="poster">Poster URL</Label>
                 <Input
                   id="poster"
-                  value={newProgram.poster}
-                  onChange={(e) => setNewProgram({ ...newProgram, poster: e.target.value })}
+                  value={newOpportunity.poster}
+                  onChange={(e) => setNewOpportunity({ ...newOpportunity, poster: e.target.value })}
                   placeholder="https://example.com/poster.jpg"
                 />
               </div>
@@ -212,17 +200,17 @@ const Programs = () => {
                   <Input
                     id="date"
                     type="date"
-                    value={newProgram.date}
-                    onChange={(e) => setNewProgram({ ...newProgram, date: e.target.value })}
+                    value={newOpportunity.date}
+                    onChange={(e) => setNewOpportunity({ ...newOpportunity, date: e.target.value })}
                   />
                 </div>
                 <div>
                   <Label htmlFor="contentType">Content Type</Label>
                   <Input
                     id="contentType"
-                    value={newProgram.contentType}
-                    onChange={(e) => setNewProgram({ ...newProgram, contentType: e.target.value })}
-                    placeholder="Workshop, Seminar, etc."
+                    value={newOpportunity.contentType}
+                    onChange={(e) => setNewOpportunity({ ...newOpportunity, contentType: e.target.value })}
+                    placeholder="Environmental, Education, etc."
                   />
                 </div>
               </div>
@@ -230,8 +218,8 @@ const Programs = () => {
                 <Label htmlFor="place">Place</Label>
                 <Input
                   id="place"
-                  value={newProgram.place}
-                  onChange={(e) => setNewProgram({ ...newProgram, place: e.target.value })}
+                  value={newOpportunity.place}
+                  onChange={(e) => setNewOpportunity({ ...newOpportunity, place: e.target.value })}
                   placeholder="Event location"
                 />
               </div>
@@ -239,16 +227,16 @@ const Programs = () => {
                 <Label htmlFor="contactDetails">Contact Details</Label>
                 <Input
                   id="contactDetails"
-                  value={newProgram.contactDetails}
-                  onChange={(e) => setNewProgram({ ...newProgram, contactDetails: e.target.value })}
+                  value={newOpportunity.contactDetails}
+                  onChange={(e) => setNewOpportunity({ ...newOpportunity, contactDetails: e.target.value })}
                   placeholder="email@example.com"
                 />
               </div>
               <div>
                 <Label htmlFor="notifyUniversity">Notify University Students</Label>
                 <Select
-                  value={newProgram.notifyUniversity}
-                  onValueChange={(value) => setNewProgram({ ...newProgram, notifyUniversity: value })}
+                  value={newOpportunity.notifyUniversity}
+                  onValueChange={(value) => setNewOpportunity({ ...newOpportunity, notifyUniversity: value })}
                 >
                   <SelectTrigger id="notifyUniversity">
                     <SelectValue placeholder="Select university" />
@@ -263,8 +251,8 @@ const Programs = () => {
                   </SelectContent>
                 </Select>
               </div>
-              <Button onClick={handleAddProgram} className="w-full">
-                Create Program
+              <Button onClick={handleAddOpportunity} className="w-full">
+                Create Opportunity
               </Button>
             </div>
           </DialogContent>
@@ -274,9 +262,9 @@ const Programs = () => {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle>All Programs</CardTitle>
+            <CardTitle>All Opportunities</CardTitle>
             <Input
-              placeholder="Search programs..."
+              placeholder="Search opportunities..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="max-w-xs"
@@ -292,45 +280,45 @@ const Programs = () => {
                 <TableHead>Date</TableHead>
                 <TableHead>Place</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Enrolled</TableHead>
+                <TableHead>Volunteers</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredPrograms.map((program) => (
-                <TableRow key={program.id}>
-                  <TableCell className="font-medium">{program.title}</TableCell>
+              {filteredOpportunities.map((opportunity) => (
+                <TableRow key={opportunity.id}>
+                  <TableCell className="font-medium">{opportunity.title}</TableCell>
                   <TableCell>
-                    <Badge variant="outline">{program.contentType}</Badge>
+                    <Badge variant="outline">{opportunity.contentType}</Badge>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2 text-sm">
                       <Calendar className="h-4 w-4 text-muted-foreground" />
-                      {format(program.date, "MMM dd, yyyy")}
+                      {format(opportunity.date, "MMM dd, yyyy")}
                     </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2 text-sm">
                       <MapPin className="h-4 w-4 text-muted-foreground" />
-                      {program.place}
+                      {opportunity.place}
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge variant={getStatusColor(program.status)}>
-                      {program.status}
+                    <Badge variant={getStatusColor(opportunity.status)}>
+                      {opportunity.status}
                     </Badge>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <Users className="h-4 w-4 text-muted-foreground" />
-                      {program.enrolledCount}
+                      {opportunity.enrolledCount}
                     </div>
                   </TableCell>
                   <TableCell>
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => navigate(`/admin/programs/${program.id}`)}
+                      onClick={() => navigate(`/admin/opportunities/${opportunity.id}`)}
                       className="gap-2"
                     >
                       <Eye className="h-4 w-4" />
@@ -347,4 +335,4 @@ const Programs = () => {
   );
 };
 
-export default Programs;
+export default Opportunities;

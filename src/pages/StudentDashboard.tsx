@@ -3,18 +3,13 @@ import { KPICard } from "@/components/KPICard";
 import { HealthScore } from "@/components/HealthScore";
 import { ProgramCard } from "@/components/ProgramCard";
 import { ProgramDialog } from "@/components/ProgramDialog";
+import { OpportunityCard } from "@/components/OpportunityCard";
+import { OpportunityDialog } from "@/components/OpportunityDialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { X } from "lucide-react";
+import { X, Megaphone, GraduationCap, DollarSign, TrendingUp, FileText } from "lucide-react";
 import { useState } from "react";
 import { format } from "date-fns";
-import { 
-  GraduationCap, 
-  DollarSign, 
-  TrendingUp, 
-  FileText,
-  Megaphone
-} from "lucide-react";
 
 type Announcement = {
   id: string;
@@ -91,6 +86,35 @@ const StudentDashboard = () => {
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
   const [isProgramDialogOpen, setIsProgramDialogOpen] = useState(false);
   const [enrolledPrograms, setEnrolledPrograms] = useState<string[]>([]);
+  
+  const [selectedOpportunity, setSelectedOpportunity] = useState<any>(null);
+  const [isOpportunityDialogOpen, setIsOpportunityDialogOpen] = useState(false);
+  const [enrolledOpportunities, setEnrolledOpportunities] = useState<string[]>([]);
+
+  const mockOpportunities = [
+    {
+      id: "1",
+      title: "Community Clean-Up Drive",
+      overview: "Help maintain a clean and sustainable community environment",
+      place: "Central Park",
+      date: new Date("2024-03-20"),
+      contentType: "Environmental",
+      contactDetails: "volunteer@community.org",
+      poster: "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=400",
+      enrolledCount: 28,
+    },
+    {
+      id: "2",
+      title: "Educational Support Program",
+      overview: "Tutor underprivileged students in various subjects",
+      place: "Community Learning Center",
+      date: new Date("2024-04-05"),
+      contentType: "Education",
+      contactDetails: "education@volunteer.org",
+      poster: "https://images.unsplash.com/photo-1497375628476-a6b648a2b89c?w=400",
+      enrolledCount: 15,
+    },
+  ];
 
   const dismissAnnouncement = (id: string) => {
     setAnnouncements(announcements.filter((a) => a.id !== id));
@@ -108,12 +132,21 @@ const StudentDashboard = () => {
     setEnrolledPrograms([...enrolledPrograms, programId]);
   };
 
+  const handleViewOpportunityDetails = (opportunityId: string) => {
+    const opportunity = mockOpportunities.find(o => o.id === opportunityId);
+    setSelectedOpportunity(opportunity || null);
+    setIsOpportunityDialogOpen(true);
+  };
+
+  const handleEnrollOpportunity = (opportunityId: string) => {
+    setEnrolledOpportunities([...enrolledOpportunities, opportunityId]);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <DashboardHeader />
       
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Page Title */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">
             Welcome back, John!
@@ -123,7 +156,6 @@ const StudentDashboard = () => {
           </p>
         </div>
 
-        {/* Announcements */}
         {announcements.length > 0 && (
           <div className="mb-8 space-y-4">
             {announcements.map((announcement) => (
@@ -154,9 +186,7 @@ const StudentDashboard = () => {
           </div>
         )}
 
-        {/* KPI Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6 mb-6">
-          {/* Academic KPI */}
           <KPICard
             title="Academic"
             icon={GraduationCap}
@@ -168,8 +198,6 @@ const StudentDashboard = () => {
               { label: "Warnings", value: "0", status: "neutral" },
             ]}
           />
-
-          {/* Financial KPI */}
           <KPICard
             title="Financial"
             icon={DollarSign}
@@ -180,8 +208,6 @@ const StudentDashboard = () => {
               { label: "Tuition Cover", value: "100%", status: "success" },
             ]}
           />
-
-          {/* Development KPI */}
           <KPICard
             title="Development"
             icon={TrendingUp}
@@ -192,8 +218,6 @@ const StudentDashboard = () => {
               { label: "Achievements", value: "2", status: "neutral" },
             ]}
           />
-
-          {/* Documents KPI */}
           <KPICard
             title="Documents"
             icon={FileText}
@@ -206,22 +230,12 @@ const StudentDashboard = () => {
           />
         </div>
 
-        {/* Health Score - Full Width */}
         <div className="max-w-md mb-8">
           <HealthScore score={78} maxScore={100} />
         </div>
 
-        {/* Upcoming Programs */}
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-2xl font-bold text-foreground">Upcoming Programs</h2>
-              <p className="text-muted-foreground mt-1">
-                Enroll in programs to enhance your development
-              </p>
-            </div>
-          </div>
-
+          <h2 className="text-2xl font-bold text-foreground mb-6">Upcoming Programs</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {mockPrograms.map((program) => (
               <ProgramCard
@@ -240,6 +254,28 @@ const StudentDashboard = () => {
           program={selectedProgram}
           isEnrolled={selectedProgram ? enrolledPrograms.includes(selectedProgram.id) : false}
           onEnroll={handleEnrollProgram}
+        />
+
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold text-foreground">Volunteering Opportunities</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {mockOpportunities.map((opportunity) => (
+              <OpportunityCard
+                key={opportunity.id}
+                {...opportunity}
+                isEnrolled={enrolledOpportunities.includes(opportunity.id)}
+                onViewDetails={handleViewOpportunityDetails}
+              />
+            ))}
+          </div>
+        </div>
+
+        <OpportunityDialog
+          open={isOpportunityDialogOpen}
+          onOpenChange={setIsOpportunityDialogOpen}
+          opportunity={selectedOpportunity}
+          isEnrolled={selectedOpportunity ? enrolledOpportunities.includes(selectedOpportunity.id) : false}
+          onEnroll={handleEnrollOpportunity}
         />
       </main>
     </div>

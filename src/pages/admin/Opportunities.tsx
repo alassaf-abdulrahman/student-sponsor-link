@@ -75,6 +75,8 @@ const mockOpportunities: Opportunity[] = [
 const Opportunities = () => {
   const [opportunities, setOpportunities] = useState<Opportunity[]>(mockOpportunities);
   const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [contentTypeFilter, setContentTypeFilter] = useState<string>("all");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -90,10 +92,13 @@ const Opportunities = () => {
     notifyUniversity: "",
   });
 
-  const filteredOpportunities = opportunities.filter((opportunity) =>
-    opportunity.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    opportunity.contentType.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredOpportunities = opportunities.filter((opportunity) => {
+    const matchesSearch = opportunity.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      opportunity.contentType.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === "all" || opportunity.status === statusFilter;
+    const matchesContentType = contentTypeFilter === "all" || opportunity.contentType.toLowerCase() === contentTypeFilter.toLowerCase();
+    return matchesSearch && matchesStatus && matchesContentType;
+  });
 
   const handleAddOpportunity = () => {
     if (!newOpportunity.title || !newOpportunity.date) {
@@ -261,14 +266,37 @@ const Opportunities = () => {
 
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-4">
             <CardTitle>All Opportunities</CardTitle>
-            <Input
-              placeholder="Search opportunities..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="max-w-xs"
-            />
+            <div className="flex items-center gap-4 flex-wrap">
+              <Input
+                placeholder="Search opportunities..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="max-w-xs"
+              />
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="upcoming">Upcoming</SelectItem>
+                  <SelectItem value="ongoing">Ongoing</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select value={contentTypeFilter} onValueChange={setContentTypeFilter}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Filter by type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="environmental">Environmental</SelectItem>
+                  <SelectItem value="education">Education</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </CardHeader>
         <CardContent>

@@ -17,6 +17,10 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import Applications from "./pages/admin/Applications";
 import TuitionRequests from "./pages/admin/TuitionRequests";
 import StudyingCountries from "./pages/admin/StudyingCountries";
+import Universities from "./pages/admin/Universities";
+import Faculties from "./pages/admin/Faculties";
+import Specializations from "./pages/admin/Specializations";
+import Sponsors from "./pages/admin/Sponsors";
 import Tickets from "./pages/admin/Tickets";
 import TicketDetail from "./pages/admin/TicketDetail";
 import Announcements from "./pages/admin/Announcements";
@@ -54,10 +58,10 @@ const App = () => (
               <Route path="tuition-requests" element={<TuitionRequests />} />
               <Route path="countries" element={<StudyingCountries />} />
               <Route path="students" element={<PlaceholderPage title="Students" description="Student management page coming soon" />} />
-              <Route path="universities" element={<PlaceholderPage title="Universities" description="University management page coming soon" />} />
-              <Route path="faculties" element={<PlaceholderPage title="Faculties" description="Faculty management page coming soon" />} />
-              <Route path="specializations" element={<PlaceholderPage title="Specializations" description="Specialization management page coming soon" />} />
-              <Route path="sponsors" element={<PlaceholderPage title="Sponsors" description="Sponsor management page coming soon" />} />
+              <Route path="universities" element={<Universities />} />
+              <Route path="faculties" element={<Faculties />} />
+              <Route path="specializations" element={<Specializations />} />
+              <Route path="sponsors" element={<Sponsors />} />
               <Route path="tickets" element={<Tickets />} />
               <Route path="tickets/:id" element={<TicketDetail />} />
               <Route path="announcements" element={<Announcements />} />

@@ -6,6 +6,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import StudentDashboard from "./pages/StudentDashboard";
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import Applications from "./pages/admin/Applications";
+import TuitionRequests from "./pages/admin/TuitionRequests";
+import StudyingCountries from "./pages/admin/StudyingCountries";
+import PlaceholderPage from "./pages/admin/PlaceholderPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,6 +26,23 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/student/dashboard" element={<StudentDashboard />} />
+            
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="applications" element={<Applications />} />
+              <Route path="tuition-requests" element={<TuitionRequests />} />
+              <Route path="countries" element={<StudyingCountries />} />
+              <Route path="students" element={<PlaceholderPage title="Students" description="Student management page coming soon" />} />
+              <Route path="universities" element={<PlaceholderPage title="Universities" description="University management page coming soon" />} />
+              <Route path="faculties" element={<PlaceholderPage title="Faculties" description="Faculty management page coming soon" />} />
+              <Route path="specializations" element={<PlaceholderPage title="Specializations" description="Specialization management page coming soon" />} />
+              <Route path="sponsors" element={<PlaceholderPage title="Sponsors" description="Sponsor management page coming soon" />} />
+              <Route path="tickets" element={<PlaceholderPage title="Tickets" description="Ticket management page coming soon" />} />
+              <Route path="announcements" element={<PlaceholderPage title="Announcements" description="Announcement management page coming soon" />} />
+              <Route path="programs" element={<PlaceholderPage title="Programs" description="Program management page coming soon" />} />
+            </Route>
+
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

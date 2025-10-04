@@ -1,14 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Globe, Receipt, FolderOpen } from "lucide-react";
+import { Globe, Receipt, FolderOpen, Moon, Sun } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useTheme } from "next-themes";
 
 export const DashboardHeader = () => {
+  const { theme, setTheme } = useTheme();
+
   return (
     <header className="border-b border-border bg-card">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -35,6 +38,19 @@ export const DashboardHeader = () => {
             <Button variant="ghost" size="sm" className="gap-2">
               <Receipt className="h-4 w-4" />
               <span className="hidden sm:inline">Tuition Requests</span>
+            </Button>
+
+            {/* Theme Toggle */}
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            >
+              {theme === "dark" ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )}
             </Button>
 
             {/* Language Switcher */}

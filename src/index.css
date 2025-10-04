@@ -1,3 +1,5 @@
+@import "react-quill/dist/quill.snow.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -124,4 +126,40 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* React Quill Dark Mode Styling */
+.dark .ql-snow.ql-toolbar {
+  @apply border-border bg-card;
+}
+
+.dark .ql-snow .ql-stroke {
+  @apply stroke-foreground;
+}
+
+.dark .ql-snow .ql-fill {
+  @apply fill-foreground;
+}
+
+.dark .ql-snow .ql-picker-label {
+  @apply text-foreground;
+}
+
+.dark .ql-toolbar.ql-snow .ql-picker-label:hover,
+.dark .ql-toolbar.ql-snow .ql-picker-label.ql-active,
+.dark .ql-toolbar.ql-snow .ql-picker-item:hover,
+.dark .ql-toolbar.ql-snow .ql-picker-item.ql-selected {
+  @apply text-primary;
+}
+
+.dark .ql-snow.ql-container {
+  @apply border-border bg-background text-foreground;
+}
+
+.dark .ql-editor.ql-blank::before {
+  @apply text-muted-foreground;
+}
+
+.dark .ql-snow .ql-picker-options {
+  @apply bg-popover border-border;
 }

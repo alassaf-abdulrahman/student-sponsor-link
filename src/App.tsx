@@ -6,11 +6,16 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import StudentDashboard from "./pages/StudentDashboard";
+import StudentTickets from "./pages/StudentTickets";
+import StudentTicketDetail from "./pages/StudentTicketDetail";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Applications from "./pages/admin/Applications";
 import TuitionRequests from "./pages/admin/TuitionRequests";
 import StudyingCountries from "./pages/admin/StudyingCountries";
+import Tickets from "./pages/admin/Tickets";
+import TicketDetail from "./pages/admin/TicketDetail";
+import Announcements from "./pages/admin/Announcements";
 import PlaceholderPage from "./pages/admin/PlaceholderPage";
 import NotFound from "./pages/NotFound";
 
@@ -26,6 +31,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/student/dashboard" element={<StudentDashboard />} />
+            <Route path="/student/tickets" element={<StudentTickets />} />
+            <Route path="/student/tickets/:id" element={<StudentTicketDetail />} />
             
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminLayout />}>
@@ -38,8 +45,9 @@ const App = () => (
               <Route path="faculties" element={<PlaceholderPage title="Faculties" description="Faculty management page coming soon" />} />
               <Route path="specializations" element={<PlaceholderPage title="Specializations" description="Specialization management page coming soon" />} />
               <Route path="sponsors" element={<PlaceholderPage title="Sponsors" description="Sponsor management page coming soon" />} />
-              <Route path="tickets" element={<PlaceholderPage title="Tickets" description="Ticket management page coming soon" />} />
-              <Route path="announcements" element={<PlaceholderPage title="Announcements" description="Announcement management page coming soon" />} />
+              <Route path="tickets" element={<Tickets />} />
+              <Route path="tickets/:id" element={<TicketDetail />} />
+              <Route path="announcements" element={<Announcements />} />
               <Route path="programs" element={<PlaceholderPage title="Programs" description="Program management page coming soon" />} />
             </Route>
 

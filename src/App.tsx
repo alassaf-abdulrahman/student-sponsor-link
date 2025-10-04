@@ -16,6 +16,9 @@ import StudyingCountries from "./pages/admin/StudyingCountries";
 import Tickets from "./pages/admin/Tickets";
 import TicketDetail from "./pages/admin/TicketDetail";
 import Announcements from "./pages/admin/Announcements";
+import Programs from "./pages/admin/Programs";
+import ProgramDetail from "./pages/admin/ProgramDetail";
+import DataAnalysis from "./pages/admin/DataAnalysis";
 import PlaceholderPage from "./pages/admin/PlaceholderPage";
 import NotFound from "./pages/NotFound";
 
@@ -48,7 +51,9 @@ const App = () => (
               <Route path="tickets" element={<Tickets />} />
               <Route path="tickets/:id" element={<TicketDetail />} />
               <Route path="announcements" element={<Announcements />} />
-              <Route path="programs" element={<PlaceholderPage title="Programs" description="Program management page coming soon" />} />
+              <Route path="programs" element={<Programs />} />
+              <Route path="programs/:id" element={<ProgramDetail />} />
+              <Route path="data-analysis" element={<DataAnalysis />} />
             </Route>
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

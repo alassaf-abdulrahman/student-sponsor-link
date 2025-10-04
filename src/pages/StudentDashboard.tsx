@@ -1,6 +1,8 @@
 import { DashboardHeader } from "@/components/DashboardHeader";
 import { KPICard } from "@/components/KPICard";
 import { HealthScore } from "@/components/HealthScore";
+import { ProgramCard } from "@/components/ProgramCard";
+import { ProgramDialog } from "@/components/ProgramDialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { X } from "lucide-react";
@@ -36,11 +38,74 @@ const mockAnnouncements: Announcement[] = [
   },
 ];
 
+type Program = {
+  id: string;
+  title: string;
+  overview: string;
+  place: string;
+  date: Date;
+  contentType: string;
+  contactDetails: string;
+  poster: string;
+  enrolledCount: number;
+};
+
+const mockPrograms: Program[] = [
+  {
+    id: "1",
+    title: "Leadership Workshop 2024",
+    overview: "Develop essential leadership skills for your academic and professional journey",
+    place: "University Main Hall",
+    date: new Date("2024-03-15"),
+    contentType: "Workshop",
+    contactDetails: "events@scholarship.org",
+    poster: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400",
+    enrolledCount: 45,
+  },
+  {
+    id: "2",
+    title: "Career Development Seminar",
+    overview: "Learn about career opportunities and professional development strategies",
+    place: "Conference Center",
+    date: new Date("2024-04-20"),
+    contentType: "Seminar",
+    contactDetails: "careers@scholarship.org",
+    poster: "https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=400",
+    enrolledCount: 62,
+  },
+  {
+    id: "3",
+    title: "Community Service Initiative",
+    overview: "Join us in giving back to the community through various volunteer activities",
+    place: "City Community Center",
+    date: new Date("2024-04-10"),
+    contentType: "Volunteer",
+    contactDetails: "volunteer@scholarship.org",
+    poster: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400",
+    enrolledCount: 32,
+  },
+];
+
 const StudentDashboard = () => {
   const [announcements, setAnnouncements] = useState<Announcement[]>(mockAnnouncements);
+  const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
+  const [isProgramDialogOpen, setIsProgramDialogOpen] = useState(false);
+  const [enrolledPrograms, setEnrolledPrograms] = useState<string[]>([]);
 
   const dismissAnnouncement = (id: string) => {
     setAnnouncements(announcements.filter((a) => a.id !== id));
+  };
+
+  const handleViewProgramDetails = (programId: string) => {
+    const program = mockPrograms.find((p) => p.id === programId);
+    if (program) {
+      setSelectedProgram(program);
+      setIsProgramDialogOpen(true);
+    }
+  };
+
+  const handleEnrollProgram = (programId: string) => {
+    setEnrolledPrograms([...enrolledPrograms, programId]);
   };
 
   return (
@@ -142,9 +207,40 @@ const StudentDashboard = () => {
         </div>
 
         {/* Health Score - Full Width */}
-        <div className="max-w-md">
+        <div className="max-w-md mb-8">
           <HealthScore score={78} maxScore={100} />
         </div>
+
+        {/* Upcoming Programs */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-foreground">Upcoming Programs</h2>
+              <p className="text-muted-foreground mt-1">
+                Enroll in programs to enhance your development
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {mockPrograms.map((program) => (
+              <ProgramCard
+                key={program.id}
+                {...program}
+                isEnrolled={enrolledPrograms.includes(program.id)}
+                onViewDetails={handleViewProgramDetails}
+              />
+            ))}
+          </div>
+        </div>
+
+        <ProgramDialog
+          open={isProgramDialogOpen}
+          onOpenChange={setIsProgramDialogOpen}
+          program={selectedProgram}
+          isEnrolled={selectedProgram ? enrolledPrograms.includes(selectedProgram.id) : false}
+          onEnroll={handleEnrollProgram}
+        />
       </main>
     </div>
   );

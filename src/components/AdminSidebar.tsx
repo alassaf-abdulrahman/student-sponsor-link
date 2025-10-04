@@ -10,7 +10,8 @@ import {
   Building, 
   TicketIcon, 
   Bell, 
-  Briefcase 
+  Briefcase,
+  TrendingUp 
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import {
@@ -39,6 +40,7 @@ const menuItems = [
   { title: "Tickets", url: "/admin/tickets", icon: TicketIcon },
   { title: "Announcements", url: "/admin/announcements", icon: Bell },
   { title: "Programs", url: "/admin/programs", icon: Briefcase },
+  { title: "Data Analysis", url: "/admin/data-analysis", icon: TrendingUp },
 ];
 
 export function AdminSidebar() {

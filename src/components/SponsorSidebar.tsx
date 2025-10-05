@@ -1,18 +1,4 @@
-import { 
-  Home, 
-  FileText, 
-  Users, 
-  Globe, 
-  Building2, 
-  BookOpen, 
-  GraduationCap, 
-  CreditCard, 
-  Building, 
-  TicketIcon, 
-  Bell, 
-  Briefcase,
-  TrendingUp 
-} from "lucide-react";
+import { Home, Users } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import {
   Sidebar,
@@ -28,24 +14,11 @@ import {
 } from "@/components/ui/sidebar";
 
 const menuItems = [
-  { title: "Home", url: "/admin", icon: Home },
-  { title: "Applications", url: "/admin/applications", icon: FileText },
-  { title: "Students", url: "/admin/students", icon: Users },
-  { title: "Studying Countries", url: "/admin/countries", icon: Globe },
-  { title: "Universities", url: "/admin/universities", icon: Building2 },
-  { title: "Faculties", url: "/admin/faculties", icon: BookOpen },
-  { title: "Specializations", url: "/admin/specializations", icon: GraduationCap },
-  { title: "Tuition Requests", url: "/admin/tuition-requests", icon: CreditCard },
-  { title: "Sponsors", url: "/admin/sponsors", icon: Building },
-  { title: "Tickets", url: "/admin/tickets", icon: TicketIcon },
-  { title: "Announcements", url: "/admin/announcements", icon: Bell },
-  { title: "Programs", url: "/admin/programs", icon: Briefcase },
-  { title: "Opportunities", url: "/admin/opportunities", icon: Users },
-  { title: "Data Analysis", url: "/admin/data-analysis", icon: TrendingUp },
-  { title: "Meetings", url: "/admin/meetings", icon: Users },
+  { title: "Home", url: "/sponsor", icon: Home },
+  { title: "Students", url: "/sponsor/students", icon: Users },
 ];
 
-export function AdminSidebar() {
+export function SponsorSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
 
@@ -56,7 +29,7 @@ export function AdminSidebar() {
           <div className="flex items-center justify-between px-2 py-4">
             {!collapsed && (
               <SidebarGroupLabel className="text-lg font-bold">
-                Admin Panel
+                Sponsor Panel
               </SidebarGroupLabel>
             )}
             <SidebarTrigger className="ml-auto" />
@@ -69,7 +42,7 @@ export function AdminSidebar() {
                   <SidebarMenuButton asChild tooltip={item.title}>
                     <NavLink 
                       to={item.url} 
-                      end={item.url === "/admin"}
+                      end={item.url === "/sponsor"}
                       className={({ isActive }) =>
                         isActive ? "bg-accent text-accent-foreground" : ""
                       }

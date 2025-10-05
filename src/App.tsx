@@ -34,6 +34,12 @@ import OpportunityDetail from "./pages/admin/OpportunityDetail";
 import DataAnalysis from "./pages/admin/DataAnalysis";
 import PlaceholderPage from "./pages/admin/PlaceholderPage";
 import NotFound from "./pages/NotFound";
+import StudentHome from "./pages/StudentHome";
+import Meetings from "./pages/admin/Meetings";
+import SponsorLayout from "./pages/sponsor/SponsorLayout";
+import SponsorDashboard from "./pages/sponsor/SponsorDashboard";
+import SponsorStudents from "./pages/sponsor/SponsorStudents";
+import SponsorStudentDetail from "./pages/sponsor/SponsorStudentDetail";
 
 const queryClient = new QueryClient();
 
@@ -46,7 +52,10 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            
+            {/* Student Routes */}
             <Route path="/student" element={<StudentDashboard />} />
+            <Route path="/student/home" element={<StudentHome />} />
             <Route path="/student/scholarships" element={<StudentScholarships />} />
             <Route path="/student/scholarships/:id" element={<StudentScholarshipDetail />} />
             <Route path="/student/profile-completion" element={<StudentProfileCompletion />} />
@@ -76,6 +85,14 @@ const App = () => (
             <Route path="opportunities" element={<Opportunities />} />
             <Route path="opportunities/:id" element={<OpportunityDetail />} />
             <Route path="data-analysis" element={<DataAnalysis />} />
+            <Route path="meetings" element={<Meetings />} />
+            </Route>
+
+            {/* Sponsor Routes */}
+            <Route path="/sponsor" element={<SponsorLayout />}>
+              <Route index element={<SponsorDashboard />} />
+              <Route path="students" element={<SponsorStudents />} />
+              <Route path="students/:id" element={<SponsorStudentDetail />} />
             </Route>
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

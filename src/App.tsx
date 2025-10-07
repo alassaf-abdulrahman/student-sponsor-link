@@ -18,6 +18,7 @@ import StudentOpportunityDetail from "./pages/StudentOpportunityDetail";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Applications from "./pages/admin/Applications";
+import ApplicationDetail from "./pages/admin/ApplicationDetail";
 import TuitionRequests from "./pages/admin/TuitionRequests";
 import StudyingCountries from "./pages/admin/StudyingCountries";
 import Universities from "./pages/admin/Universities";

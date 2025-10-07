@@ -71,6 +71,7 @@ const App = () => (
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
               <Route path="applications" element={<Applications />} />
+              <Route path="applications/:id" element={<ApplicationDetail />} />
               <Route path="tuition-requests" element={<TuitionRequests />} />
               <Route path="countries" element={<StudyingCountries />} />
               <Route path="students" element={<PlaceholderPage title="Students" description="Student management page coming soon" />} />

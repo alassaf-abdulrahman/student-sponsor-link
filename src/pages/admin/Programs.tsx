@@ -27,7 +27,8 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Calendar, MapPin, Users, Eye } from "lucide-react";
+import { Plus, Calendar, MapPin, Users, Eye, Globe } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
@@ -37,6 +38,7 @@ type Program = {
   title: string;
   overview: string;
   place: string;
+  country: string;
   date: Date;
   contentType: string;
   contactDetails: string;
@@ -51,6 +53,7 @@ const mockPrograms: Program[] = [
     title: "Leadership Workshop 2024",
     overview: "Develop essential leadership skills for your academic and professional journey",
     place: "University Main Hall",
+    country: "Malaysia",
     date: new Date("2024-03-15"),
     contentType: "Workshop",
     contactDetails: "events@scholarship.org",
@@ -63,6 +66,7 @@ const mockPrograms: Program[] = [
     title: "Career Development Seminar",
     overview: "Learn about career opportunities and professional development strategies",
     place: "Conference Center",
+    country: "Saudi Arabia",
     date: new Date("2024-02-28"),
     contentType: "Seminar",
     contactDetails: "careers@scholarship.org",
@@ -75,6 +79,7 @@ const mockPrograms: Program[] = [
     title: "Community Service Initiative",
     overview: "Join us in giving back to the community through various volunteer activities",
     place: "City Community Center",
+    country: "UAE",
     date: new Date("2024-04-10"),
     contentType: "Volunteer",
     contactDetails: "volunteer@scholarship.org",
@@ -89,6 +94,7 @@ const Programs = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [contentTypeFilter, setContentTypeFilter] = useState<string>("all");
+  const [countryFilter, setCountryFilter] = useState<string>("all");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -97,11 +103,13 @@ const Programs = () => {
     title: "",
     overview: "",
     place: "",
+    country: "",
     date: "",
     contentType: "",
     contactDetails: "",
     poster: "",
-    notifyUniversity: "",
+    qrCodeAttendance: false,
+    hasCertificate: false,
   });
 
   const filteredPrograms = programs.filter((program) => {
@@ -109,7 +117,8 @@ const Programs = () => {
       program.contentType.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === "all" || program.status === statusFilter;
     const matchesContentType = contentTypeFilter === "all" || program.contentType.toLowerCase() === contentTypeFilter.toLowerCase();
-    return matchesSearch && matchesStatus && matchesContentType;
+    const matchesCountry = countryFilter === "all" || program.country === countryFilter;
+    return matchesSearch && matchesStatus && matchesContentType && matchesCountry;
   });
 
   const handleAddProgram = () => {
@@ -136,11 +145,13 @@ const Programs = () => {
       title: "",
       overview: "",
       place: "",
+      country: "",
       date: "",
       contentType: "",
       contactDetails: "",
       poster: "",
-      notifyUniversity: "",
+      qrCodeAttendance: false,
+      hasCertificate: false,
     });
 
     toast({
@@ -231,14 +242,25 @@ const Programs = () => {
                   />
                 </div>
               </div>
-              <div>
-                <Label htmlFor="place">Place</Label>
-                <Input
-                  id="place"
-                  value={newProgram.place}
-                  onChange={(e) => setNewProgram({ ...newProgram, place: e.target.value })}
-                  placeholder="Event location"
-                />
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="place">Place</Label>
+                  <Input
+                    id="place"
+                    value={newProgram.place}
+                    onChange={(e) => setNewProgram({ ...newProgram, place: e.target.value })}
+                    placeholder="Event location"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="country">Country</Label>
+                  <Input
+                    id="country"
+                    value={newProgram.country}
+                    onChange={(e) => setNewProgram({ ...newProgram, country: e.target.value })}
+                    placeholder="Country"
+                  />
+                </div>
               </div>
               <div>
                 <Label htmlFor="contactDetails">Contact Details</Label>
@@ -249,24 +271,29 @@ const Programs = () => {
                   placeholder="email@example.com"
                 />
               </div>
-              <div>
-                <Label htmlFor="notifyUniversity">Notify University Students</Label>
-                <Select
-                  value={newProgram.notifyUniversity}
-                  onValueChange={(value) => setNewProgram({ ...newProgram, notifyUniversity: value })}
-                >
-                  <SelectTrigger id="notifyUniversity">
-                    <SelectValue placeholder="Select university" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Universities</SelectItem>
-                    <SelectItem value="harvard">Harvard University</SelectItem>
-                    <SelectItem value="mit">MIT</SelectItem>
-                    <SelectItem value="stanford">Stanford University</SelectItem>
-                    <SelectItem value="oxford">Oxford University</SelectItem>
-                    <SelectItem value="cambridge">Cambridge University</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="qrCode">QR Code Attendance</Label>
+                    <p className="text-sm text-muted-foreground">Enable QR scanning</p>
+                  </div>
+                  <Switch
+                    id="qrCode"
+                    checked={newProgram.qrCodeAttendance}
+                    onCheckedChange={(checked) => setNewProgram({ ...newProgram, qrCodeAttendance: checked })}
+                  />
+                </div>
+                <div className="flex items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="certificate">Certificate</Label>
+                    <p className="text-sm text-muted-foreground">Generate certificates</p>
+                  </div>
+                  <Switch
+                    id="certificate"
+                    checked={newProgram.hasCertificate}
+                    onCheckedChange={(checked) => setNewProgram({ ...newProgram, hasCertificate: checked })}
+                  />
+                </div>
               </div>
               <Button onClick={handleAddProgram} className="w-full">
                 Create Program
@@ -309,6 +336,17 @@ const Programs = () => {
                   <SelectItem value="volunteer">Volunteer</SelectItem>
                 </SelectContent>
               </Select>
+              <Select value={countryFilter} onValueChange={setCountryFilter}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Filter by country" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Countries</SelectItem>
+                  <SelectItem value="Malaysia">Malaysia</SelectItem>
+                  <SelectItem value="Saudi Arabia">Saudi Arabia</SelectItem>
+                  <SelectItem value="UAE">UAE</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </CardHeader>
@@ -319,6 +357,7 @@ const Programs = () => {
                 <TableHead>Title</TableHead>
                 <TableHead>Type</TableHead>
                 <TableHead>Date</TableHead>
+                <TableHead>Country</TableHead>
                 <TableHead>Place</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Enrolled</TableHead>
@@ -336,6 +375,12 @@ const Programs = () => {
                     <div className="flex items-center gap-2 text-sm">
                       <Calendar className="h-4 w-4 text-muted-foreground" />
                       {format(program.date, "MMM dd, yyyy")}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2 text-sm">
+                      <Globe className="h-4 w-4 text-muted-foreground" />
+                      {program.country}
                     </div>
                   </TableCell>
                   <TableCell>

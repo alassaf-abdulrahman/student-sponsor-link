@@ -19,6 +19,8 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Applications from "./pages/admin/Applications";
 import ApplicationDetail from "./pages/admin/ApplicationDetail";
+import Students from "./pages/admin/Students";
+import StudentDetail from "./pages/admin/StudentDetail";
 import Requests from "./pages/admin/Requests";
 import RequestDetail from "./pages/admin/RequestDetail";
 import StudyingCountries from "./pages/admin/StudyingCountries";
@@ -73,12 +75,13 @@ const App = () => (
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
-              <Route path="applications" element={<Applications />} />
-              <Route path="applications/:id" element={<ApplicationDetail />} />
+          <Route path="applications" element={<Applications />} />
+          <Route path="applications/:id" element={<ApplicationDetail />} />
+          <Route path="students" element={<Students />} />
+          <Route path="students/:id" element={<StudentDetail />} />
               <Route path="requests" element={<Requests />} />
               <Route path="requests/:id" element={<RequestDetail />} />
               <Route path="countries" element={<StudyingCountries />} />
-              <Route path="students" element={<PlaceholderPage title="Students" description="Student management page coming soon" />} />
               <Route path="universities" element={<Universities />} />
               <Route path="faculties" element={<Faculties />} />
               <Route path="specializations" element={<Specializations />} />

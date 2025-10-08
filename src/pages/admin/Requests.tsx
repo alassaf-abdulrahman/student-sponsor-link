@@ -17,102 +17,104 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Eye, CheckCircle, FileText, Search } from "lucide-react";
+import { Search, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 // Static data
-const tuitionRequests = [
+const requests = [
   {
-    id: "TR001",
+    id: "REQ001",
     studentName: "Ahmed Hassan",
     university: "MIT",
     country: "USA",
+    requestType: "Tuition",
     amount: "$12,000",
     cgpa: "3.8",
     status: "pending",
     semester: "Fall 2025",
   },
   {
-    id: "TR002",
+    id: "REQ002",
     studentName: "Fatima Al-Sayed",
     university: "Oxford",
     country: "UK",
-    amount: "£9,500",
+    requestType: "Hostel",
+    amount: "£2,500",
     cgpa: "3.9",
-    status: "under_review",
+    status: "in_progress",
     semester: "Fall 2025",
   },
   {
-    id: "TR003",
+    id: "REQ003",
     studentName: "Omar Khalil",
     university: "Toronto",
     country: "Canada",
-    amount: "CAD 15,000",
+    requestType: "Living Fees",
+    amount: "CAD 5,000",
     cgpa: "3.7",
     status: "pending",
     semester: "Fall 2025",
   },
   {
-    id: "TR004",
+    id: "REQ004",
     studentName: "Layla Ibrahim",
     university: "TU Munich",
     country: "Germany",
+    requestType: "Tuition",
     amount: "€8,000",
     cgpa: "3.6",
-    status: "approved",
+    status: "transferring",
     semester: "Fall 2025",
   },
   {
-    id: "TR005",
+    id: "REQ005",
     studentName: "Youssef Mansour",
     university: "Stanford",
     country: "USA",
+    requestType: "Tuition",
     amount: "$13,500",
     cgpa: "3.95",
-    status: "pending",
+    status: "rejected",
     semester: "Fall 2025",
   },
 ];
 
-const TuitionRequests = () => {
+const Requests = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [requestTypeFilter, setRequestTypeFilter] = useState("all");
   const [universityFilter, setUniversityFilter] = useState("all");
   const [countryFilter, setCountryFilter] = useState("all");
 
-  const filteredRequests = tuitionRequests.filter((req) => {
-    const matchesSearch = req.studentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         req.id.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredRequests = requests.filter((req) => {
+    const matchesSearch = 
+      req.studentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      req.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      req.university.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      req.country.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === "all" || req.status === statusFilter;
+    const matchesRequestType = requestTypeFilter === "all" || req.requestType === requestTypeFilter;
     const matchesUniversity = universityFilter === "all" || req.university === universityFilter;
     const matchesCountry = countryFilter === "all" || req.country === countryFilter;
 
-    return matchesSearch && matchesStatus && matchesUniversity && matchesCountry;
+    return matchesSearch && matchesStatus && matchesRequestType && matchesUniversity && matchesCountry;
   });
 
-  const handleProcess = (id: string) => {
-    console.log("Processing request:", id);
-    // TODO: Implement process logic
-  };
-
-  const handleRequestDocuments = (id: string) => {
-    console.log("Requesting additional documents:", id);
-    // TODO: Implement request documents logic
-  };
-
-  const handleView = (id: string) => {
-    navigate(`/admin/tuition-requests/${id}`);
+  const handleViewRequest = (id: string) => {
+    navigate(`/admin/requests/${id}`);
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "approved":
+      case "transferring":
         return "default";
       case "pending":
         return "secondary";
-      case "under_review":
+      case "in_progress":
         return "outline";
+      case "rejected":
+        return "destructive";
       default:
         return "secondary";
     }
@@ -121,22 +123,34 @@ const TuitionRequests = () => {
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">Tuition Requests</h1>
-        <p className="text-muted-foreground">Manage student tuition fee requests</p>
+        <h1 className="text-3xl font-bold text-foreground mb-2">Requests</h1>
+        <p className="text-muted-foreground">Manage student requests</p>
       </div>
 
       {/* Filters */}
       <div className="bg-card p-4 rounded-lg border border-border mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search by name or ID..."
+              placeholder="Search by name, university, or country..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
             />
           </div>
+
+          <Select value={requestTypeFilter} onValueChange={setRequestTypeFilter}>
+            <SelectTrigger>
+              <SelectValue placeholder="Request Type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Types</SelectItem>
+              <SelectItem value="Tuition">Tuition</SelectItem>
+              <SelectItem value="Hostel">Hostel</SelectItem>
+              <SelectItem value="Living Fees">Living Fees</SelectItem>
+            </SelectContent>
+          </Select>
 
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger>
@@ -145,9 +159,9 @@ const TuitionRequests = () => {
             <SelectContent>
               <SelectItem value="all">All Status</SelectItem>
               <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="under_review">Under Review</SelectItem>
-              <SelectItem value="approved">Approved</SelectItem>
+              <SelectItem value="in_progress">In Progress</SelectItem>
               <SelectItem value="rejected">Rejected</SelectItem>
+              <SelectItem value="transferring">Transferring</SelectItem>
             </SelectContent>
           </Select>
 
@@ -189,9 +203,9 @@ const TuitionRequests = () => {
               <TableHead>Student Name</TableHead>
               <TableHead>University</TableHead>
               <TableHead>Country</TableHead>
+              <TableHead>Request Type</TableHead>
               <TableHead>Amount</TableHead>
               <TableHead>CGPA</TableHead>
-              <TableHead>Semester</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -203,44 +217,30 @@ const TuitionRequests = () => {
                 <TableCell>{req.studentName}</TableCell>
                 <TableCell>{req.university}</TableCell>
                 <TableCell>{req.country}</TableCell>
+                <TableCell>
+                  <Badge variant="outline">{req.requestType}</Badge>
+                </TableCell>
                 <TableCell className="font-semibold">{req.amount}</TableCell>
                 <TableCell>
                   <Badge variant="outline" className="font-mono">
                     {req.cgpa}
                   </Badge>
                 </TableCell>
-                <TableCell>{req.semester}</TableCell>
                 <TableCell>
                   <Badge variant={getStatusColor(req.status)}>
                     {req.status.replace("_", " ")}
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleView(req.id)}
-                    >
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleProcess(req.id)}
-                      className="text-green-600 hover:text-green-700 hover:bg-green-50"
-                    >
-                      <CheckCircle className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleRequestDocuments(req.id)}
-                      className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                    >
-                      <FileText className="h-4 w-4" />
-                    </Button>
-                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleViewRequest(req.id)}
+                    className="gap-2"
+                  >
+                    <Eye className="h-4 w-4" />
+                    View Request
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -251,4 +251,4 @@ const TuitionRequests = () => {
   );
 };
 
-export default TuitionRequests;
+export default Requests;

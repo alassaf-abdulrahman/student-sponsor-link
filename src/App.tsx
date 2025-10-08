@@ -19,7 +19,8 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Applications from "./pages/admin/Applications";
 import ApplicationDetail from "./pages/admin/ApplicationDetail";
-import TuitionRequests from "./pages/admin/TuitionRequests";
+import Requests from "./pages/admin/Requests";
+import RequestDetail from "./pages/admin/RequestDetail";
 import StudyingCountries from "./pages/admin/StudyingCountries";
 import Universities from "./pages/admin/Universities";
 import Faculties from "./pages/admin/Faculties";
@@ -38,7 +39,7 @@ import NotFound from "./pages/NotFound";
 import StudentHome from "./pages/StudentHome";
 import Meetings from "./pages/admin/Meetings";
 import Scholarships from "./pages/admin/Scholarships";
-import Certificates from "./pages/admin/Certificates";
+
 import SponsorLayout from "./pages/sponsor/SponsorLayout";
 import SponsorDashboard from "./pages/sponsor/SponsorDashboard";
 import SponsorStudents from "./pages/sponsor/SponsorStudents";
@@ -74,7 +75,8 @@ const App = () => (
               <Route index element={<AdminDashboard />} />
               <Route path="applications" element={<Applications />} />
               <Route path="applications/:id" element={<ApplicationDetail />} />
-              <Route path="tuition-requests" element={<TuitionRequests />} />
+              <Route path="requests" element={<Requests />} />
+              <Route path="requests/:id" element={<RequestDetail />} />
               <Route path="countries" element={<StudyingCountries />} />
               <Route path="students" element={<PlaceholderPage title="Students" description="Student management page coming soon" />} />
               <Route path="universities" element={<Universities />} />
@@ -89,7 +91,6 @@ const App = () => (
               <Route path="programs/:id" element={<ProgramDetail />} />
               <Route path="opportunities" element={<Opportunities />} />
               <Route path="opportunities/:id" element={<OpportunityDetail />} />
-              <Route path="certificates" element={<Certificates />} />
               <Route path="data-analysis" element={<DataAnalysis />} />
               <Route path="meetings" element={<Meetings />} />
             </Route>

@@ -7,6 +7,13 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Calendar as CalendarIcon, Clock, Plus, Trash2, Users } from "lucide-react";
 import { format } from "date-fns";
 
@@ -41,6 +48,7 @@ const Meetings = () => {
   const [isAddSlotOpen, setIsAddSlotOpen] = useState(false);
   const [slotStartTime, setSlotStartTime] = useState("09:00");
   const [slotEndTime, setSlotEndTime] = useState("12:00");
+  const [slotDuration, setSlotDuration] = useState<number>(30);
   const [meetingLink, setMeetingLink] = useState("");
   const [customSlotTime, setCustomSlotTime] = useState("");
 
@@ -68,7 +76,7 @@ const Meetings = () => {
         meetingLink,
         isBooked: false
       });
-      currentTime += 30;
+      currentTime += slotDuration;
     }
 
     const existingDayIndex = meetingDays.findIndex(
@@ -207,8 +215,8 @@ const Meetings = () => {
                     </div>
 
                     <div className="border-t pt-4">
-                      <h4 className="font-medium mb-3">Generate Slots (30 min each)</h4>
-                      <div className="grid grid-cols-2 gap-3">
+                      <h4 className="font-medium mb-3">Generate Slots</h4>
+                      <div className="grid grid-cols-2 gap-3 mb-3">
                         <div>
                           <Label>Start Time</Label>
                           <Input
@@ -225,6 +233,22 @@ const Meetings = () => {
                             onChange={(e) => setSlotEndTime(e.target.value)}
                           />
                         </div>
+                      </div>
+                      <div>
+                        <Label>Slot Duration</Label>
+                        <Select 
+                          value={slotDuration.toString()} 
+                          onValueChange={(value) => setSlotDuration(Number(value))}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select duration" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="15">15 minutes</SelectItem>
+                            <SelectItem value="30">30 minutes</SelectItem>
+                            <SelectItem value="60">60 minutes</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                       <Button className="w-full mt-3" onClick={generateTimeSlots}>
                         Generate Slots

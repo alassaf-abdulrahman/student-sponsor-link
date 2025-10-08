@@ -89,7 +89,6 @@ const Opportunities = () => {
     contentType: "",
     contactDetails: "",
     poster: "",
-    notifyUniversity: "",
   });
 
   const filteredOpportunities = opportunities.filter((opportunity) => {
@@ -128,7 +127,6 @@ const Opportunities = () => {
       contentType: "",
       contactDetails: "",
       poster: "",
-      notifyUniversity: "",
     });
 
     toast({
@@ -236,25 +234,6 @@ const Opportunities = () => {
                   onChange={(e) => setNewOpportunity({ ...newOpportunity, contactDetails: e.target.value })}
                   placeholder="email@example.com"
                 />
-              </div>
-              <div>
-                <Label htmlFor="notifyUniversity">Notify University Students</Label>
-                <Select
-                  value={newOpportunity.notifyUniversity}
-                  onValueChange={(value) => setNewOpportunity({ ...newOpportunity, notifyUniversity: value })}
-                >
-                  <SelectTrigger id="notifyUniversity">
-                    <SelectValue placeholder="Select university" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Universities</SelectItem>
-                    <SelectItem value="harvard">Harvard University</SelectItem>
-                    <SelectItem value="mit">MIT</SelectItem>
-                    <SelectItem value="stanford">Stanford University</SelectItem>
-                    <SelectItem value="oxford">Oxford University</SelectItem>
-                    <SelectItem value="cambridge">Cambridge University</SelectItem>
-                  </SelectContent>
-                </Select>
               </div>
               <Button onClick={handleAddOpportunity} className="w-full">
                 Create Opportunity

@@ -11,7 +11,9 @@ import {
   TicketIcon, 
   Bell, 
   Briefcase,
-  TrendingUp 
+  TrendingUp,
+  Calendar,
+  Award
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import {
@@ -35,14 +37,16 @@ const menuItems = [
   { title: "Universities", url: "/admin/universities", icon: Building2 },
   { title: "Faculties", url: "/admin/faculties", icon: BookOpen },
   { title: "Specializations", url: "/admin/specializations", icon: GraduationCap },
+  { title: "Scholarships", url: "/admin/scholarships", icon: Award },
   { title: "Tuition Requests", url: "/admin/tuition-requests", icon: CreditCard },
   { title: "Sponsors", url: "/admin/sponsors", icon: Building },
   { title: "Tickets", url: "/admin/tickets", icon: TicketIcon },
   { title: "Announcements", url: "/admin/announcements", icon: Bell },
   { title: "Programs", url: "/admin/programs", icon: Briefcase },
   { title: "Opportunities", url: "/admin/opportunities", icon: Users },
+  { title: "Certificates", url: "/admin/certificates", icon: Award },
   { title: "Data Analysis", url: "/admin/data-analysis", icon: TrendingUp },
-  { title: "Meetings", url: "/admin/meetings", icon: Users },
+  { title: "Meetings", url: "/admin/meetings", icon: Calendar },
 ];
 
 export function AdminSidebar() {

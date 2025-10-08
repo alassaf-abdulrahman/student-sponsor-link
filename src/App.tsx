@@ -37,6 +37,8 @@ import PlaceholderPage from "./pages/admin/PlaceholderPage";
 import NotFound from "./pages/NotFound";
 import StudentHome from "./pages/StudentHome";
 import Meetings from "./pages/admin/Meetings";
+import Scholarships from "./pages/admin/Scholarships";
+import Certificates from "./pages/admin/Certificates";
 import SponsorLayout from "./pages/sponsor/SponsorLayout";
 import SponsorDashboard from "./pages/sponsor/SponsorDashboard";
 import SponsorStudents from "./pages/sponsor/SponsorStudents";
@@ -78,16 +80,18 @@ const App = () => (
               <Route path="universities" element={<Universities />} />
               <Route path="faculties" element={<Faculties />} />
               <Route path="specializations" element={<Specializations />} />
+              <Route path="scholarships" element={<Scholarships />} />
               <Route path="sponsors" element={<Sponsors />} />
               <Route path="tickets" element={<Tickets />} />
               <Route path="tickets/:id" element={<TicketDetail />} />
               <Route path="announcements" element={<Announcements />} />
-            <Route path="programs" element={<Programs />} />
-            <Route path="programs/:id" element={<ProgramDetail />} />
-            <Route path="opportunities" element={<Opportunities />} />
-            <Route path="opportunities/:id" element={<OpportunityDetail />} />
-            <Route path="data-analysis" element={<DataAnalysis />} />
-            <Route path="meetings" element={<Meetings />} />
+              <Route path="programs" element={<Programs />} />
+              <Route path="programs/:id" element={<ProgramDetail />} />
+              <Route path="opportunities" element={<Opportunities />} />
+              <Route path="opportunities/:id" element={<OpportunityDetail />} />
+              <Route path="certificates" element={<Certificates />} />
+              <Route path="data-analysis" element={<DataAnalysis />} />
+              <Route path="meetings" element={<Meetings />} />
             </Route>
 
             {/* Sponsor Routes */}

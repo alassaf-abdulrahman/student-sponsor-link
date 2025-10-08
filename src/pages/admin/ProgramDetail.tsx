@@ -131,6 +131,7 @@ const ProgramDetail = () => {
   const [isInviteDialogOpen, setIsInviteDialogOpen] = useState(false);
   const [isCertificateDialogOpen, setIsCertificateDialogOpen] = useState(false);
   const [isExcuseDialogOpen, setIsExcuseDialogOpen] = useState(false);
+  const [isQrDialogOpen, setIsQrDialogOpen] = useState(false);
   const [selectedExcuse, setSelectedExcuse] = useState<InvitedStudent | null>(null);
   const [selectedCertificate, setSelectedCertificate] = useState<string>("");
   const [isEditing, setIsEditing] = useState(false);
@@ -579,6 +580,22 @@ const ProgramDetail = () => {
                   <p className="text-sm text-muted-foreground mt-1">Mark attendance for accepted students</p>
                 </div>
                 <div className="flex gap-2">
+                  {mockProgram.qrCodeAttendance && (
+                    <Button
+                      variant="outline"
+                      onClick={() => setIsQrDialogOpen(true)}
+                      className="gap-2"
+                    >
+                      <QrCode className="h-4 w-4" />
+                      QR Code
+                    </Button>
+                  )}
+                  <Button
+                    onClick={confirmAllAttendance}
+                    disabled={isAttendanceConfirmed}
+                  >
+                    {isAttendanceConfirmed ? "Attendance Confirmed" : "Confirm Attendance"}
+                  </Button>
                   {mockProgram.hasCertificate && (
                     <>
                       <Button
@@ -599,12 +616,6 @@ const ProgramDetail = () => {
                       </Button>
                     </>
                   )}
-                  <Button
-                    onClick={confirmAllAttendance}
-                    disabled={isAttendanceConfirmed}
-                  >
-                    {isAttendanceConfirmed ? "Attendance Confirmed" : "Confirm Attendance"}
-                  </Button>
                 </div>
               </div>
             </CardHeader>
@@ -886,6 +897,44 @@ const ProgramDetail = () => {
                 Close
               </Button>
             )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* QR Code Dialog */}
+      <Dialog open={isQrDialogOpen} onOpenChange={setIsQrDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Program QR Code</DialogTitle>
+          </DialogHeader>
+          
+          <div className="flex flex-col items-center gap-4">
+            <div className="p-8 bg-white rounded-lg">
+              {/* Mock QR Code - Replace with actual QR code generation when cloud is enabled */}
+              <div className="w-64 h-64 border-4 border-gray-900 rounded-lg flex items-center justify-center">
+                <QrCode className="h-32 w-32 text-gray-900" />
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground text-center">
+              Students can scan this QR code to mark their attendance
+            </p>
+            <p className="text-xs text-muted-foreground text-center">
+              Program ID: {mockProgram.id}
+            </p>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsQrDialogOpen(false)}>
+              Close
+            </Button>
+            <Button onClick={() => {
+              toast({
+                title: "QR Code Downloaded",
+                description: "QR code has been saved to your device",
+              });
+            }}>
+              Download QR Code
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { DashboardHeader } from "@/components/DashboardHeader";
+import { ApplicantHeader } from "@/components/ApplicantHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -61,17 +61,17 @@ const mockScholarships = [
 const StudentScholarshipDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
+
   // In real app, fetch scholarship by id
   const scholarship = mockScholarships.find(s => s.id === parseInt(id || "0"));
-  
+
   // Mock profile completion status
   const isProfileComplete = false;
 
   if (!scholarship) {
     return (
       <div className="min-h-screen bg-background">
-        <DashboardHeader />
+        <ApplicantHeader />
         <main className="container mx-auto px-4 py-8">
           <Card className="p-12 text-center">
             <p className="text-muted-foreground">Scholarship not found</p>
@@ -95,8 +95,8 @@ const StudentScholarshipDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <DashboardHeader />
-      
+      <ApplicantHeader />
+
       <main className="container mx-auto px-4 py-8 max-w-4xl">
         <Button
           variant="ghost"
@@ -120,7 +120,7 @@ const StudentScholarshipDetail = () => {
               {scholarship.description}
             </CardDescription>
           </CardHeader>
-          
+
           <CardContent className="space-y-6">
             {/* Quick Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

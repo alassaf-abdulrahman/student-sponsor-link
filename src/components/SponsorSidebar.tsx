@@ -1,4 +1,4 @@
-import { Home, Users } from "lucide-react";
+import { Home, Users, Briefcase, GraduationCap, BarChart3 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import {
   Sidebar,
@@ -16,6 +16,9 @@ import {
 const menuItems = [
   { title: "Home", url: "/sponsor", icon: Home },
   { title: "Students", url: "/sponsor/students", icon: Users },
+  { title: "Programs", url: "/sponsor/programs", icon: GraduationCap },
+  { title: "Opportunities", url: "/sponsor/opportunities", icon: Briefcase },
+  { title: "Data Analysis", url: "/sponsor/data-analysis", icon: BarChart3 },
 ];
 
 export function SponsorSidebar() {
@@ -40,8 +43,8 @@ export function SponsorSidebar() {
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild tooltip={item.title}>
-                    <NavLink 
-                      to={item.url} 
+                    <NavLink
+                      to={item.url}
                       end={item.url === "/sponsor"}
                       className={({ isActive }) =>
                         isActive ? "bg-accent text-accent-foreground" : ""

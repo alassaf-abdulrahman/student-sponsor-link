@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { DashboardHeader } from "@/components/DashboardHeader";
+import { StudentHeader } from "@/components/StudentHeader";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -106,7 +106,7 @@ const StudentTicketDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <DashboardHeader />
+      <StudentHeader />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Button

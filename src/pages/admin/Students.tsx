@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import * as XLSX from 'xlsx';
+import { useToast } from "@/hooks/use-toast";
 import {
   Table,
   TableBody,
@@ -18,18 +20,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Eye } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Eye, Download } from "lucide-react";
 
 // Mock student data
 const mockStudents = [
@@ -93,34 +85,16 @@ const mockStudents = [
 const Students = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  
+
   const [searchQuery, setSearchQuery] = useState("");
   const [countryFilter, setCountryFilter] = useState("all");
   const [universityFilter, setUniversityFilter] = useState("all");
   const [scholarshipFilter, setScholarshipFilter] = useState("all");
   const [programTypeFilter, setProgramTypeFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
-  
-  const [actionDialogOpen, setActionDialogOpen] = useState(false);
-  const [actionType, setActionType] = useState("");
-  const [actionMessage, setActionMessage] = useState("");
 
   const handleViewStudent = (studentId: string) => {
     navigate(`/admin/students/${studentId}`);
-  };
-
-  const handleActionClick = (type: string) => {
-    setActionType(type);
-    setActionDialogOpen(true);
-  };
-
-  const handleSendAction = () => {
-    toast({
-      title: `${actionType} sent successfully`,
-      description: "The notification has been sent to the selected students.",
-    });
-    setActionDialogOpen(false);
-    setActionMessage("");
   };
 
   const getKpiStatusColor = (status: string) => {
@@ -171,28 +145,30 @@ const Students = () => {
     );
   });
 
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(filteredStudents);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Students");
+    XLSX.writeFile(workbook, "students_list.xlsx");
+
+    toast({
+      title: "Success",
+      description: "Students exported to Excel successfully",
+    });
+  };
+
   return (
     <div className="p-8">
       <div className="mb-8">
-        <div className="flex items-center justify-between mb-6">
+        <div className="mb-6 flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-foreground">Students</h1>
             <p className="text-muted-foreground">Manage and monitor all students</p>
           </div>
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={() => handleActionClick("First Warning")}>
-              First Warning
-            </Button>
-            <Button variant="outline" onClick={() => handleActionClick("Second Warning")}>
-              Second Warning
-            </Button>
-            <Button variant="outline" onClick={() => handleActionClick("Suspension")}>
-              Suspension
-            </Button>
-            <Button variant="outline" onClick={() => handleActionClick("Request Meeting")}>
-              Request Meeting
-            </Button>
-          </div>
+          <Button onClick={exportToExcel} className="gap-2">
+            <Download className="h-4 w-4" />
+            Download as Excel
+          </Button>
         </div>
 
         {/* Filters Section */}
@@ -210,7 +186,7 @@ const Students = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              
+
               <div>
                 <label className="text-sm font-medium mb-2 block">Country</label>
                 <Select value={countryFilter} onValueChange={setCountryFilter}>
@@ -341,34 +317,6 @@ const Students = () => {
           </CardContent>
         </Card>
       </div>
-
-      {/* Action Dialog */}
-      <Dialog open={actionDialogOpen} onOpenChange={setActionDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Send {actionType}</DialogTitle>
-            <DialogDescription>
-              Write a message to send to the selected students.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <Textarea
-              placeholder="Type your message here..."
-              value={actionMessage}
-              onChange={(e) => setActionMessage(e.target.value)}
-              rows={6}
-            />
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setActionDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleSendAction}>
-              Confirm Send
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

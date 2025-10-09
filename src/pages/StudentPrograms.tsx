@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { StudentHeader } from "@/components/StudentHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -134,6 +135,7 @@ const StudentPrograms = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <StudentHeader />
       <div className="container mx-auto p-6 space-y-6">
         <div>
           <h1 className="text-3xl font-bold text-foreground">My Programs</h1>

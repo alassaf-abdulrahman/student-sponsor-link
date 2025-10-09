@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { DashboardHeader } from "@/components/DashboardHeader";
+import { ApplicantHeader } from "@/components/ApplicantHeader";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -52,7 +52,7 @@ const StudentScholarships = () => {
 
   const filteredScholarships = mockScholarships.filter(scholarship => {
     const matchesSearch = scholarship.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         scholarship.description.toLowerCase().includes(searchTerm.toLowerCase());
+      scholarship.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesLevel = filterLevel === "all" || scholarship.studyLevel === filterLevel;
     const matchesCountry = filterCountry === "all" || scholarship.country === filterCountry;
     return matchesSearch && matchesLevel && matchesCountry;
@@ -60,8 +60,8 @@ const StudentScholarships = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <DashboardHeader />
-      
+      <ApplicantHeader />
+
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Available Scholarships</h1>
@@ -83,7 +83,7 @@ const StudentScholarships = () => {
                   className="pl-9"
                 />
               </div>
-              
+
               <Select value={filterLevel} onValueChange={setFilterLevel}>
                 <SelectTrigger>
                   <SelectValue placeholder="Study Level" />

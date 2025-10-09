@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import * as XLSX from 'xlsx';
 import {
   Select,
   SelectContent,
@@ -29,7 +30,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Eye, CheckCircle, XCircle, Search } from "lucide-react";
+import { Eye, CheckCircle, XCircle, Search, Download } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 
@@ -122,7 +123,7 @@ const Applications = () => {
   const [countryFilter, setCountryFilter] = useState("all");
   const [scholarshipFilter, setScholarshipFilter] = useState("all");
   const [programTypeFilter, setProgramTypeFilter] = useState("all");
-  
+
   // Dialog states
   const [approveDialogOpen, setApproveDialogOpen] = useState(false);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
@@ -201,11 +202,45 @@ const Applications = () => {
     setComment("");
   };
 
+  const exportToExcel = () => {
+    // Combine all applications
+    const allApplications = [
+      ...submittedApplications.map(app => ({
+        ...app,
+        stage: "Submitted",
+      })),
+      ...firstApprovalApplications.map(app => ({
+        ...app,
+        stage: "First Approval",
+      })),
+      ...secondApprovalApplications.map(app => ({
+        ...app,
+        stage: "Second Approval",
+      })),
+    ];
+
+    const worksheet = XLSX.utils.json_to_sheet(allApplications);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Applications");
+    XLSX.writeFile(workbook, "scholarship_applications.xlsx");
+
+    toast({
+      title: "Success",
+      description: "Applications exported to Excel successfully",
+    });
+  };
+
   return (
     <div className="p-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">Applications</h1>
-        <p className="text-muted-foreground">Manage scholarship applications through approval stages</p>
+      <div className="mb-8 flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Applications</h1>
+          <p className="text-muted-foreground">Manage scholarship applications through approval stages</p>
+        </div>
+        <Button onClick={exportToExcel} className="gap-2">
+          <Download className="h-4 w-4" />
+          Download as Excel
+        </Button>
       </div>
 
       {/* Filters */}

@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { StudentHeader } from "@/components/StudentHeader";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -65,6 +66,7 @@ const StudentOpportunityDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <StudentHeader />
       <div className="container mx-auto p-6 space-y-6">
         <Button
           variant="ghost"

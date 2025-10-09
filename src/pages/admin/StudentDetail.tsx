@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -12,14 +13,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, CheckCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 // Mock data for a student
 const studentData = {
   id: "STD001",
   status: "Active",
   enrollmentDate: "2023-09-01",
-  
+
   // Personal Information
   personal: {
     nameEnglish: "Ahmed Hassan Mohamed",
@@ -152,6 +163,25 @@ const studentData = {
 const StudentDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const [actionDialogOpen, setActionDialogOpen] = useState(false);
+  const [actionType, setActionType] = useState("");
+  const [actionMessage, setActionMessage] = useState("");
+
+  const handleActionClick = (type: string) => {
+    setActionType(type);
+    setActionDialogOpen(true);
+  };
+
+  const handleSendAction = () => {
+    toast({
+      title: `${actionType} sent successfully`,
+      description: `The notification has been sent to ${studentData.personal.nameEnglish}.`,
+    });
+    setActionDialogOpen(false);
+    setActionMessage("");
+  };
 
   return (
     <div className="p-8">
@@ -174,9 +204,23 @@ const StudentDetail = () => {
               {studentData.personal.nameEnglish} - Enrolled on {studentData.enrollmentDate}
             </p>
           </div>
-          <Badge variant="default" className="text-base px-4 py-2">
-            {studentData.status}
-          </Badge>
+          <div className="flex gap-2 items-center">
+            <Button variant="outline" onClick={() => handleActionClick("First Warning")}>
+              First Warning
+            </Button>
+            <Button variant="outline" onClick={() => handleActionClick("Second Warning")}>
+              Second Warning
+            </Button>
+            <Button variant="outline" onClick={() => handleActionClick("Suspension")}>
+              Suspension
+            </Button>
+            <Button variant="outline" onClick={() => handleActionClick("Request Meeting")}>
+              Request Meeting
+            </Button>
+            <Badge variant="default" className="text-base px-4 py-2">
+              {studentData.status}
+            </Badge>
+          </div>
         </div>
       </div>
 
@@ -581,6 +625,34 @@ const StudentDetail = () => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Action Dialog */}
+      <Dialog open={actionDialogOpen} onOpenChange={setActionDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Send {actionType}</DialogTitle>
+            <DialogDescription>
+              Write a message to send to {studentData.personal.nameEnglish}.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <Textarea
+              placeholder="Type your message here..."
+              value={actionMessage}
+              onChange={(e) => setActionMessage(e.target.value)}
+              rows={6}
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setActionDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSendAction}>
+              Confirm Send
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DashboardHeader } from "@/components/DashboardHeader";
+import { ApplicantHeader } from "@/components/ApplicantHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,7 +32,7 @@ const StudentProfileCompletion = () => {
     passportExpiry: "",
     parentContactName: "",
     parentContactNumber: "",
-    
+
     // Academic Info
     lastQualification: "",
     secondarySchoolName: "",
@@ -58,7 +58,7 @@ const StudentProfileCompletion = () => {
     masterSpecialization: "",
     masterStudyMode: "",
     masterResearchTitle: "",
-    
+
     // Ongoing/Upcoming Info
     hasStartedProgram: "",
     programCountry: "",
@@ -102,8 +102,8 @@ const StudentProfileCompletion = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <DashboardHeader />
-      
+      <ApplicantHeader />
+
       <main className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Complete Your Profile</h1>

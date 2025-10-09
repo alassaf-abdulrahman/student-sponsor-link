@@ -1,8 +1,21 @@
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { StudentHeader } from "@/components/StudentHeader";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, MapPin, Mail, Users, ArrowLeft, Download, CheckCircle, XCircle } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Calendar, MapPin, Mail, Users, ArrowLeft, Download, CheckCircle, XCircle, Upload } from "lucide-react";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 
@@ -11,7 +24,11 @@ const StudentProgramDetail = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Mock data
+  const [excuseDialogOpen, setExcuseDialogOpen] = useState(false);
+  const [excuseReason, setExcuseReason] = useState("");
+  const [excuseDocument, setExcuseDocument] = useState<File | null>(null);
+
+  // Mock data - set to pending to test excuse feature
   const program = {
     id: "1",
     title: "Leadership Workshop 2024",
@@ -22,9 +39,9 @@ const StudentProgramDetail = () => {
     contactDetails: "events@scholarship.org",
     poster: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800",
     enrolledCount: 45,
-    isEnrolled: true,
-    attendanceStatus: "confirmed",
-    hasCertificate: true,
+    isEnrolled: false,
+    attendanceStatus: "pending",
+    hasCertificate: false,
   };
 
   const handleGenerateCertificate = () => {
@@ -32,7 +49,38 @@ const StudentProgramDetail = () => {
       title: "Certificate Generated",
       description: "Your certificate has been generated and downloaded.",
     });
-    // In real implementation, this would trigger certificate generation
+  };
+
+  const handleEnroll = () => {
+    toast({
+      title: "Enrolled Successfully",
+      description: "You have been enrolled in this program.",
+    });
+  };
+
+  const handleExcuse = () => {
+    if (!excuseReason.trim()) {
+      toast({
+        title: "Error",
+        description: "Please provide a reason for excusing.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Excuse Submitted",
+      description: "Your excuse has been submitted successfully.",
+    });
+    setExcuseDialogOpen(false);
+    setExcuseReason("");
+    setExcuseDocument(null);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setExcuseDocument(e.target.files[0]);
+    }
   };
 
   const getAttendanceDisplay = () => {
@@ -64,6 +112,7 @@ const StudentProgramDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <StudentHeader />
       <div className="container mx-auto p-6 space-y-6">
         <Button
           variant="ghost"
@@ -157,12 +206,76 @@ const StudentProgramDetail = () => {
                         Generate Certificate
                       </Button>
                     )}
+
+                    {!program.hasCertificate && program.attendanceStatus === "pending" && (
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={handleEnroll}
+                          className="flex-1"
+                        >
+                          Enroll
+                        </Button>
+                        <Button
+                          onClick={() => setExcuseDialogOpen(true)}
+                          variant="outline"
+                          className="flex-1"
+                        >
+                          Excuse
+                        </Button>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </div>
             </div>
           </CardContent>
         </Card>
+
+        {/* Excuse Dialog */}
+        <Dialog open={excuseDialogOpen} onOpenChange={setExcuseDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Excuse from Program</DialogTitle>
+              <DialogDescription>
+                Please provide a reason for excusing yourself from this program.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="reason">Reason *</Label>
+                <Textarea
+                  id="reason"
+                  placeholder="Explain why you need to excuse..."
+                  value={excuseReason}
+                  onChange={(e) => setExcuseReason(e.target.value)}
+                  rows={4}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="document">Supporting Document (Optional)</Label>
+                <Input
+                  id="document"
+                  type="file"
+                  onChange={handleFileChange}
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                />
+                {excuseDocument && (
+                  <p className="text-sm text-muted-foreground">
+                    Selected: {excuseDocument.name}
+                  </p>
+                )}
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setExcuseDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleExcuse}>
+                Submit Excuse
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

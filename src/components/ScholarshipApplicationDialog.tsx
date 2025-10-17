@@ -29,7 +29,6 @@ const programLevels = ["Bachelor", "Master", "PhD"];
 
 export const ScholarshipApplicationDialog = ({ open, onOpenChange, scholarshipName }: ScholarshipApplicationDialogProps) => {
   const { toast } = useToast();
-  const [step, setStep] = useState(1);
   const [hasStarted, setHasStarted] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedUniversity, setSelectedUniversity] = useState("");
@@ -46,7 +45,6 @@ export const ScholarshipApplicationDialog = ({ open, onOpenChange, scholarshipNa
   });
 
   const resetForm = () => {
-    setStep(1);
     setHasStarted("");
     setSelectedCountry("");
     setSelectedUniversity("");
@@ -67,22 +65,6 @@ export const ScholarshipApplicationDialog = ({ open, onOpenChange, scholarshipNa
     onOpenChange(false);
   };
 
-  const handleNext = () => {
-    if (step === 1 && hasStarted) {
-      setStep(2);
-    } else if (step === 2 && selectedCountry) {
-      setStep(3);
-    } else if (step === 3 && selectedUniversity) {
-      setStep(4);
-    }
-  };
-
-  const handleBack = () => {
-    if (step > 1) {
-      setStep(step - 1);
-    }
-  };
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setOfferLetterFile(e.target.files[0]);
@@ -91,6 +73,33 @@ export const ScholarshipApplicationDialog = ({ open, onOpenChange, scholarshipNa
 
   const handleSubmit = () => {
     // Validate required fields
+    if (!hasStarted) {
+      toast({
+        title: "Missing Information",
+        description: "Please select if you have started your program.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!selectedCountry) {
+      toast({
+        title: "Missing Information",
+        description: "Please select your country.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!selectedUniversity) {
+      toast({
+        title: "Missing Information",
+        description: "Please select your university.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     if (hasStarted === "yes") {
       if (!formData.specializationName || !formData.programLevel || !formData.cgpa || 
           !formData.cgpaOutOf || !formData.totalSemesters || !formData.currentSemester || 
@@ -130,29 +139,27 @@ export const ScholarshipApplicationDialog = ({ open, onOpenChange, scholarshipNa
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Step 1: Has Started or Not */}
-          {step === 1 && (
-            <div className="space-y-4">
-              <Label className="text-base font-semibold">Have you started your program?</Label>
-              <RadioGroup value={hasStarted} onValueChange={setHasStarted}>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="yes" id="started-yes" />
-                  <Label htmlFor="started-yes" className="font-normal cursor-pointer">
-                    Yes, I have already started
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="no" id="started-no" />
-                  <Label htmlFor="started-no" className="font-normal cursor-pointer">
-                    No, I have not started yet
-                  </Label>
-                </div>
-              </RadioGroup>
-            </div>
-          )}
+          {/* Has Started or Not */}
+          <div className="space-y-4">
+            <Label className="text-base font-semibold">Have you started your program?</Label>
+            <RadioGroup value={hasStarted} onValueChange={setHasStarted}>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="yes" id="started-yes" />
+                <Label htmlFor="started-yes" className="font-normal cursor-pointer">
+                  Yes, I have already started
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="no" id="started-no" />
+                <Label htmlFor="started-no" className="font-normal cursor-pointer">
+                  No, I have not started yet
+                </Label>
+              </div>
+            </RadioGroup>
+          </div>
 
-          {/* Step 2: Select Country */}
-          {step === 2 && (
+          {/* Select Country - shown after hasStarted is selected */}
+          {hasStarted && (
             <div className="space-y-4">
               <div>
                 <Label className="text-base font-semibold">
@@ -180,8 +187,8 @@ export const ScholarshipApplicationDialog = ({ open, onOpenChange, scholarshipNa
             </div>
           )}
 
-          {/* Step 3: Select University */}
-          {step === 3 && (
+          {/* Select University - shown after country is selected */}
+          {hasStarted && selectedCountry && (
             <div className="space-y-4">
               <div>
                 <Label className="text-base font-semibold">
@@ -209,8 +216,8 @@ export const ScholarshipApplicationDialog = ({ open, onOpenChange, scholarshipNa
             </div>
           )}
 
-          {/* Step 4: Program Details */}
-          {step === 4 && (
+          {/* Program Details - shown after university is selected */}
+          {hasStarted && selectedCountry && selectedUniversity && (
             <div className="space-y-4">
               <h3 className="text-base font-semibold">
                 {hasStarted === "yes" ? "Current Program Details" : "Intended Program Details"}
@@ -330,27 +337,12 @@ export const ScholarshipApplicationDialog = ({ open, onOpenChange, scholarshipNa
         </div>
 
         <DialogFooter className="flex gap-2">
-          {step > 1 && (
-            <Button variant="outline" onClick={handleBack}>
-              Back
-            </Button>
-          )}
           <Button variant="outline" onClick={handleClose}>
             Cancel
           </Button>
-          {step < 4 ? (
-            <Button onClick={handleNext} disabled={
-              (step === 1 && !hasStarted) ||
-              (step === 2 && !selectedCountry) ||
-              (step === 3 && !selectedUniversity)
-            }>
-              Next
-            </Button>
-          ) : (
-            <Button onClick={handleSubmit}>
-              Submit Application
-            </Button>
-          )}
+          <Button onClick={handleSubmit}>
+            Submit Application
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

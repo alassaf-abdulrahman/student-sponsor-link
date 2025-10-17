@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ApplicantHeader } from "@/components/ApplicantHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { GraduationCap, MapPin, Calendar, DollarSign, FileText, ArrowLeft, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { ScholarshipApplicationDialog } from "@/components/ScholarshipApplicationDialog";
 
 // Mock data - same as in StudentScholarships
 const mockScholarships = [
@@ -61,12 +63,13 @@ const mockScholarships = [
 const StudentScholarshipDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [isApplicationDialogOpen, setIsApplicationDialogOpen] = useState(false);
 
   // In real app, fetch scholarship by id
   const scholarship = mockScholarships.find(s => s.id === parseInt(id || "0"));
 
   // Mock profile completion status
-  const isProfileComplete = false;
+  const isProfileComplete = true; // Changed to true for testing
 
   if (!scholarship) {
     return (
@@ -88,8 +91,7 @@ const StudentScholarshipDetail = () => {
     if (!isProfileComplete) {
       navigate("/student/profile-completion");
     } else {
-      // Navigate to application form
-      console.log("Navigate to application form");
+      setIsApplicationDialogOpen(true);
     }
   };
 
@@ -204,6 +206,12 @@ const StudentScholarshipDetail = () => {
             </div>
           </CardContent>
         </Card>
+
+        <ScholarshipApplicationDialog
+          open={isApplicationDialogOpen}
+          onOpenChange={setIsApplicationDialogOpen}
+          scholarshipName={scholarship.name}
+        />
       </main>
     </div>
   );

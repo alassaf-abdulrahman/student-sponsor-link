@@ -15,11 +15,15 @@ const Index = () => {
         <p className="text-xl text-muted-foreground max-w-md mx-auto">
           Connecting students with opportunities, sponsors with impact
         </p>
-        <div className="pt-4">
-          <Link to="/student/dashboard">
-            <Button size="lg" className="gap-2">
-              View Student Dashboard
-              <ArrowRight className="h-4 w-4" />
+        <div className="pt-4 flex gap-4 justify-center">
+          <Link to="/login">
+            <Button size="lg" variant="default">
+              Sign In
+            </Button>
+          </Link>
+          <Link to="/register">
+            <Button size="lg" variant="outline">
+              Sign Up
             </Button>
           </Link>
         </div>

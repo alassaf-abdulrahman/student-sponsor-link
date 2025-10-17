@@ -5,6 +5,11 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
+import Register from "./pages/auth/Register";
+import VerifyOTP from "./pages/auth/VerifyOTP";
+import Login from "./pages/auth/Login";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import ResetPassword from "./pages/auth/ResetPassword";
 import StudentDashboard from "./pages/StudentDashboard";
 import StudentPrograms from "./pages/StudentPrograms";
 import StudentProgramDetail from "./pages/StudentProgramDetail";
@@ -70,6 +75,13 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            
+            {/* Auth Routes */}
+            <Route path="/register" element={<Register />} />
+            <Route path="/verify-otp" element={<VerifyOTP />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
 
             {/* Applicant Routes */}
             <Route path="/applicant" element={<ApplicantDashboard />} />

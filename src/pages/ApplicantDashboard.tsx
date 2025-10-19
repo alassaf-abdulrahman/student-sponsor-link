@@ -133,6 +133,9 @@ const ApplicantDashboard = () => {
 
   const availableSlots = getAvailableSlotsForDate();
 
+  // Get dates that have available slots
+  const datesWithSlots = Object.keys(mockAvailableSlots).map(dateStr => new Date(dateStr));
+
   return (
     <div className="min-h-screen bg-background">
       <ApplicantHeader />
@@ -225,6 +228,12 @@ const ApplicantDashboard = () => {
                       selected={selectedDate}
                       onSelect={handleDateSelect}
                       disabled={(date) => date < new Date()}
+                      modifiers={{
+                        hasSlots: datesWithSlots
+                      }}
+                      modifiersClassNames={{
+                        hasSlots: "bg-accent/50 font-semibold"
+                      }}
                       className="rounded-md border"
                     />
                   </div>

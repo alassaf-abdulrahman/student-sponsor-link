@@ -155,45 +155,67 @@ const ApplicantDashboard = () => {
               <Alert className="border-primary bg-primary/5">
                 <Calendar className="h-4 w-4" />
                 <AlertDescription>
-                  <div className="space-y-2">
+                  <div className="space-y-4">
                     <p className="font-semibold">Your Scheduled Meeting</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                      <div>
-                        <span className="text-muted-foreground">Date:</span>{" "}
-                        <span className="font-medium">{bookedAppointment.starts_at_display.split(",")[0]}</span>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {/* First Section: Meeting Details */}
+                      <div className="space-y-2 text-sm">
+                        <div>
+                          <span className="text-muted-foreground">Date:</span>{" "}
+                          <span className="font-medium">{bookedAppointment.starts_at_display.split(",")[0]}</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Duration:</span>{" "}
+                          <span className="font-medium">{bookedAppointment.duration_min} minutes</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Start Time:</span>{" "}
+                          <span className="font-medium">{bookedAppointment.starts_at_display.split(", ")[1]}</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">End Time:</span>{" "}
+                          <span className="font-medium">{bookedAppointment.ends_at_display.split(", ")[1]}</span>
+                        </div>
                       </div>
-                      <div>
-                        <span className="text-muted-foreground">Duration:</span>{" "}
-                        <span className="font-medium">{bookedAppointment.duration_min} minutes</span>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Start Time:</span>{" "}
-                        <span className="font-medium">{bookedAppointment.starts_at_display.split(", ")[1]}</span>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">End Time:</span>{" "}
-                        <span className="font-medium">{bookedAppointment.ends_at_display.split(", ")[1]}</span>
-                      </div>
-                      <div className="md:col-span-2">
-                        <span className="text-muted-foreground">Meeting Link:</span>{" "}
-                        <a 
-                          href={bookedAppointment.meeting_url} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-primary hover:underline inline-flex items-center gap-1"
+
+                      {/* Second Section: Actions */}
+                      <div className="flex flex-col gap-2 justify-center">
+                        <Button 
+                          size="sm"
+                          onClick={() => window.open(bookedAppointment.meeting_url, '_blank')}
+                          className="w-full"
                         >
-                          Join Meeting <ExternalLink className="h-3 w-3" />
-                        </a>
+                          <ExternalLink className="h-4 w-4" />
+                          Join Meeting
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => setBookedAppointment(null)}
+                          className="w-full"
+                        >
+                          Cancel Appointment
+                        </Button>
+                      </div>
+
+                      {/* Third Section: Timezone Switcher */}
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">View times in:</label>
+                        <Select value={selectedTimezone} onValueChange={setSelectedTimezone}>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select timezone" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {timezones.map((tz) => (
+                              <SelectItem key={tz.value} value={tz.value}>
+                                {tz.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
                     </div>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => setBookedAppointment(null)}
-                      className="mt-2"
-                    >
-                      Cancel Appointment
-                    </Button>
                   </div>
                 </AlertDescription>
               </Alert>

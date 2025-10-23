@@ -121,6 +121,23 @@ const StudentDashboard = () => {
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
   const [isProgramDialogOpen, setIsProgramDialogOpen] = useState(false);
   const [enrolledPrograms, setEnrolledPrograms] = useState<string[]>([]);
+  
+  // Scholarship approval state
+  const [showScholarshipApproval, setShowScholarshipApproval] = useState(true);
+  const [approvedScholarship] = useState({
+    name: "XYZ Excellence Scholarship",
+    description: "This prestigious scholarship is awarded to outstanding students who have demonstrated exceptional academic performance and leadership qualities. The scholarship provides comprehensive support for your educational journey.",
+    type: "Partial",
+    coverage: "80% of tuition fees",
+    yearlyLimit: "$10,000",
+    benefits: [
+      "Tuition fee coverage",
+      "Hostel accommodation",
+      "Monthly stipend",
+      "Health insurance",
+      "Academic mentorship",
+    ],
+  });
 
   const [selectedOpportunity, setSelectedOpportunity] = useState<any>(null);
   const [isOpportunityDialogOpen, setIsOpportunityDialogOpen] = useState(false);
@@ -323,6 +340,108 @@ const StudentDashboard = () => {
             Here's your scholarship journey overview
           </p>
         </div>
+
+        {/* Scholarship Approval Section */}
+        {showScholarshipApproval && (
+          <div className="mb-8">
+            <Alert className="bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800">
+              <GraduationCap className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              <AlertDescription className="ml-6">
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-bold text-blue-900 dark:text-blue-100 mb-2">
+                      Congratulations! Your Scholarship Application Has Been Approved
+                    </h3>
+                    <p className="text-sm text-blue-800 dark:text-blue-200 mb-4">
+                      Please review the scholarship details below and confirm your acceptance.
+                    </p>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div>
+                      <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
+                        Scholarship Name
+                      </h4>
+                      <p className="text-sm text-blue-800 dark:text-blue-200">
+                        {approvedScholarship.name}
+                      </p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
+                        Description
+                      </h4>
+                      <p className="text-sm text-blue-800 dark:text-blue-200">
+                        {approvedScholarship.description}
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
+                          Type
+                        </h4>
+                        <Badge className="bg-blue-600 dark:bg-blue-500 text-white">
+                          {approvedScholarship.type}
+                        </Badge>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
+                          Coverage
+                        </h4>
+                        <p className="text-sm text-blue-800 dark:text-blue-200">
+                          {approvedScholarship.coverage} (up to {approvedScholarship.yearlyLimit} yearly)
+                        </p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                        Benefits
+                      </h4>
+                      <ul className="list-disc list-inside space-y-1">
+                        {approvedScholarship.benefits.map((benefit, index) => (
+                          <li key={index} className="text-sm text-blue-800 dark:text-blue-200">
+                            {benefit}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3 pt-2">
+                    <Button
+                      onClick={() => {
+                        toast({
+                          title: "Scholarship Confirmed",
+                          description: "You have successfully confirmed your scholarship acceptance.",
+                        });
+                        setShowScholarshipApproval(false);
+                      }}
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      Confirm Acceptance
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        toast({
+                          title: "Scholarship Rejected",
+                          description: "You have rejected the scholarship offer.",
+                          variant: "destructive",
+                        });
+                        setShowScholarshipApproval(false);
+                      }}
+                      className="border-blue-300 dark:border-blue-700 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/30"
+                    >
+                      Reject Offer
+                    </Button>
+                  </div>
+                </div>
+              </AlertDescription>
+            </Alert>
+          </div>
+        )}
 
         {announcements.length > 0 && (
           <div className="mb-8 space-y-4">

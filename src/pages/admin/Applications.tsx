@@ -131,6 +131,8 @@ const Applications = () => {
   const [selectedAppId, setSelectedAppId] = useState("");
   const [comment, setComment] = useState("");
   const [editableScholarship, setEditableScholarship] = useState("");
+  const [coveragePercentage, setCoveragePercentage] = useState("");
+  const [limitAmount, setLimitAmount] = useState("");
   const [services, setServices] = useState({
     tuition: false,
     hostel: false,
@@ -555,14 +557,51 @@ const Applications = () => {
           <div className="space-y-4">
             <div>
               <Label htmlFor="scholarship">Scholarship</Label>
-              <Input
-                id="scholarship"
-                value={editableScholarship}
-                onChange={(e) => setEditableScholarship(e.target.value)}
-              />
+              <Select value={editableScholarship} onValueChange={setEditableScholarship}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select scholarship" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="XYZ Excellence Scholarship">XYZ Excellence Scholarship</SelectItem>
+                  <SelectItem value="ABC Merit Scholarship">ABC Merit Scholarship</SelectItem>
+                  <SelectItem value="Full Academic Scholarship">Full Academic Scholarship</SelectItem>
+                  <SelectItem value="Engineering Excellence">Engineering Excellence</SelectItem>
+                  <SelectItem value="Research Fellowship">Research Fellowship</SelectItem>
+                  <SelectItem value="STEM Scholarship">STEM Scholarship</SelectItem>
+                  <SelectItem value="Graduate Research Grant">Graduate Research Grant</SelectItem>
+                  <SelectItem value="PhD Excellence Award">PhD Excellence Award</SelectItem>
+                  <SelectItem value="Innovation Scholarship">Innovation Scholarship</SelectItem>
+                  <SelectItem value="Leadership Grant">Leadership Grant</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="coverage">Coverage Percentage (%)</Label>
+                <Input
+                  id="coverage"
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={coveragePercentage}
+                  onChange={(e) => setCoveragePercentage(e.target.value)}
+                  placeholder="e.g., 80"
+                />
+              </div>
+              <div>
+                <Label htmlFor="limit">Yearly Limit Amount</Label>
+                <Input
+                  id="limit"
+                  type="number"
+                  min="0"
+                  value={limitAmount}
+                  onChange={(e) => setLimitAmount(e.target.value)}
+                  placeholder="e.g., 10000"
+                />
+              </div>
             </div>
             <div>
-              <Label>Services Provided</Label>
+              <Label>Benefits (Services Provided)</Label>
               <div className="space-y-3 mt-2">
                 <div className="flex items-center space-x-2">
                   <Checkbox

@@ -193,6 +193,19 @@ const StudentDashboard = () => {
   const [isCompleted, setIsCompleted] = useState(false);
   const [transcriptFile, setTranscriptFile] = useState<File | null>(null);
 
+  // Student profile state
+  const [hasCompletedProfile, setHasCompletedProfile] = useState(false);
+  const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
+  const [profileData, setProfileData] = useState({
+    specialization: "",
+    totalSemesters: 0,
+    university: "",
+    languageOfStudy: "",
+    yearlyTuitionFees: "",
+    country: "",
+  });
+  const [offerLetterFile, setOfferLetterFile] = useState<File | null>(null);
+
   const mockOpportunities = [
     {
       id: "1",
@@ -247,6 +260,10 @@ const StudentDashboard = () => {
   const hasActiveSemester = semesters.some(s => s.status === "active");
 
   const handleAddSemester = () => {
+    if (!hasCompletedProfile && semesters.length === 0) {
+      setIsProfileDialogOpen(true);
+      return;
+    }
     if (hasActiveSemester) {
       toast({
         title: "Cannot add semester",
@@ -256,6 +273,25 @@ const StudentDashboard = () => {
       return;
     }
     setIsAddSemesterOpen(true);
+  };
+
+  const handleSaveProfile = () => {
+    // Validate profile data
+    if (!profileData.specialization || !profileData.university || !profileData.country) {
+      toast({
+        title: "Incomplete information",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setHasCompletedProfile(true);
+    setIsProfileDialogOpen(false);
+    setIsAddSemesterOpen(true);
+    toast({
+      title: "Profile completed",
+      description: "You can now add your semesters.",
+    });
   };
 
   const handleSaveSemester = () => {
@@ -591,6 +627,13 @@ const StudentDashboard = () => {
                   ))}
                 </TableBody>
               </Table>
+              <div className="mt-4 px-6 pb-4">
+                <Alert>
+                  <AlertDescription className="text-sm text-muted-foreground">
+                    <strong>Note:</strong> Please add all the previous semesters until the current one you are studying in.
+                  </AlertDescription>
+                </Alert>
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -638,6 +681,91 @@ const StudentDashboard = () => {
           isEnrolled={selectedOpportunity ? enrolledOpportunities.includes(selectedOpportunity.id) : false}
           onEnroll={handleEnrollOpportunity}
         />
+
+        {/* Student Profile Dialog */}
+        <Dialog open={isProfileDialogOpen} onOpenChange={setIsProfileDialogOpen}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Complete Your Profile</DialogTitle>
+              <DialogDescription>
+                Please provide your academic information before adding semesters.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="specialization">Specialization *</Label>
+                <Input
+                  id="specialization"
+                  value={profileData.specialization}
+                  onChange={(e) => setProfileData({ ...profileData, specialization: e.target.value })}
+                  placeholder="e.g., Computer Science"
+                />
+              </div>
+              <div>
+                <Label htmlFor="totalSemesters">Total Semesters Number *</Label>
+                <Input
+                  id="totalSemesters"
+                  type="number"
+                  value={profileData.totalSemesters || ""}
+                  onChange={(e) => setProfileData({ ...profileData, totalSemesters: Number(e.target.value) })}
+                  placeholder="e.g., 8"
+                />
+              </div>
+              <div>
+                <Label htmlFor="university">University *</Label>
+                <Input
+                  id="university"
+                  value={profileData.university}
+                  onChange={(e) => setProfileData({ ...profileData, university: e.target.value })}
+                  placeholder="e.g., Harvard University"
+                />
+              </div>
+              <div>
+                <Label htmlFor="languageOfStudy">Language of Study</Label>
+                <Input
+                  id="languageOfStudy"
+                  value={profileData.languageOfStudy}
+                  onChange={(e) => setProfileData({ ...profileData, languageOfStudy: e.target.value })}
+                  placeholder="e.g., English"
+                />
+              </div>
+              <div>
+                <Label htmlFor="yearlyTuitionFees">Yearly Tuition Fees</Label>
+                <Input
+                  id="yearlyTuitionFees"
+                  type="number"
+                  value={profileData.yearlyTuitionFees}
+                  onChange={(e) => setProfileData({ ...profileData, yearlyTuitionFees: e.target.value })}
+                  placeholder="e.g., 50000"
+                />
+              </div>
+              <div>
+                <Label htmlFor="country">Country *</Label>
+                <Input
+                  id="country"
+                  value={profileData.country}
+                  onChange={(e) => setProfileData({ ...profileData, country: e.target.value })}
+                  placeholder="e.g., United States"
+                />
+              </div>
+              <div className="col-span-2">
+                <Label htmlFor="offerLetter">Offer Letter Document</Label>
+                <Input
+                  id="offerLetter"
+                  type="file"
+                  onChange={(e) => setOfferLetterFile(e.target.files?.[0] || null)}
+                  accept=".pdf,.doc,.docx"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsProfileDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleSaveProfile}>Continue to Add Semesters</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         {/* Add Semester Dialog */}
         <Dialog open={isAddSemesterOpen} onOpenChange={setIsAddSemesterOpen}>

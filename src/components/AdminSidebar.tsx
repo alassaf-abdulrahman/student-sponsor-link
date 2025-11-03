@@ -13,7 +13,8 @@ import {
   Briefcase,
   TrendingUp,
   Calendar,
-  Award
+  Award,
+  Shield
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import {
@@ -46,6 +47,7 @@ const menuItems = [
   { title: "Opportunities", url: "/admin/opportunities", icon: Users },
   { title: "Data Analysis", url: "/admin/data-analysis", icon: TrendingUp },
   { title: "Meetings", url: "/admin/meetings", icon: Calendar },
+  { title: "Admins", url: "/admin/admins", icon: Shield },
 ];
 
 export function AdminSidebar() {

@@ -53,6 +53,7 @@ import PlaceholderPage from "./pages/admin/PlaceholderPage";
 import NotFound from "./pages/NotFound";
 import Meetings from "./pages/admin/Meetings";
 import Scholarships from "./pages/admin/Scholarships";
+import Admins from "./pages/admin/Admins";
 
 import SponsorLayout from "./pages/sponsor/SponsorLayout";
 import SponsorDashboard from "./pages/sponsor/SponsorDashboard";
@@ -131,6 +132,7 @@ const App = () => (
               <Route path="opportunities/:id" element={<OpportunityDetail />} />
               <Route path="data-analysis" element={<DataAnalysis />} />
               <Route path="meetings" element={<Meetings />} />
+              <Route path="admins" element={<Admins />} />
             </Route>
 
             {/* Sponsor Routes */}
